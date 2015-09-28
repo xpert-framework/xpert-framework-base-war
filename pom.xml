@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.xpert</groupId>
             <artifactId>xpert-framework</artifactId>
-            <version>1.8.2</version>
+            <version>1.8.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
@@ -119,10 +119,10 @@
     </dependencies>
     
     <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>Prime Repo</name>
-            <url>http://repository.primefaces.org</url>
+       <repository>
+            <id>xpert-framework</id>
+            <name>xpert-framework</name>
+            <url>http://xpert-framework.github.io/maven/</url>
         </repository>
     </repositories>
 
