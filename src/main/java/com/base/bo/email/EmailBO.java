@@ -135,8 +135,8 @@ public class EmailBO {
      * @throws BusinessException
      */
     public void enviar(ModeloEmail modeloEmail, Map<String, Object> parametros, String destinatario, List<Attachment> anexos) throws BusinessException {
-        String mensagem = EmailBO.getMensagem(modeloEmail.getLayout(), parametros);
-        String assunto = EmailBO.getMensagem(modeloEmail.getAssunto(), parametros);
+        String mensagem = getMensagem(modeloEmail.getLayout(), parametros);
+        String assunto = getMensagem(modeloEmail.getAssunto(), parametros);
         enviar(assunto, mensagem, modeloEmail.getConfiguracaoEmail(), destinatario, anexos);
     }
 
@@ -228,8 +228,8 @@ public class EmailBO {
             email.send();
 
         } catch (EmailException ex) {
-            erroSistemaBO.save(ex);
             logger.log(Level.SEVERE, ex.getMessage(), ex);
+            erroSistemaBO.save(ex);
             throw new BusinessException("Erro ao enviar o email. " + (ex.getMessage() != null ? ex.getMessage() : ""));
         }
 
@@ -240,7 +240,7 @@ public class EmailBO {
         cfg.setDefaultEncoding("UTF-8");
     }
 
-    public static String getMensagem(String layout, Map<String, Object> parametros) throws BusinessException {
+    public String getMensagem(String layout, Map<String, Object> parametros) throws BusinessException {
         Template template;
         try {
             template = new Template("name", new StringReader(layout), cfg);
@@ -251,6 +251,7 @@ public class EmailBO {
             return writer.toString();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
+            erroSistemaBO.save(ex);
             throw new BusinessException("Erro ao pegar a mensagem de email. " + ex.getClass());
         }
     }
