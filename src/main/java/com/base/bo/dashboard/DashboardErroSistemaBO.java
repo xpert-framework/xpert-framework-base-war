@@ -135,10 +135,10 @@ public class DashboardErroSistemaBO {
          * Fazer left join pois o usuario pode ser nulo
          */
         return dao.getQueryBuilder()
-                .by("COALESCE(u.userLogin, 'NÃO INFORMADO')")
+                .by("COALESCE(usuario.userLogin, 'NÃO INFORMADO')")
                 .aggregate(count("e"), min("e.data"), max("e.data"))
                 .from(ErroSistema.class, "e")
-                .leftJoin("e.usuario", "u")
+                .leftJoin("e.usuario", "usuario")
                 .orderBy("2")
                 .add(getRestrictions(dashboardErroSistema))
                 .getResultList();

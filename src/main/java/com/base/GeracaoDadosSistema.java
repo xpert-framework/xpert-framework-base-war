@@ -117,49 +117,49 @@ public class GeracaoDadosSistema {
         /**
          * Norte
          */
-        createUf(new Uf(11L, "Rondônia", "RO", 1L, "Norte", "-10.83", "-63.34"));
-        createUf(new Uf(12L, "Acre", "AC", 1L, "Norte", "-8.77", "-70.55"));
-        createUf(new Uf(13L, "Amazonas", "AM", 1L, "Norte", "-3.47", "-65.1"));
-        createUf(new Uf(14L, "Roraima", "RR", 1L, "Norte", "1.99", "-61.33"));
-        createUf(new Uf(15L, "Pará", "PA", 1L, "Norte", "-3.79", "-52.48"));
-        createUf(new Uf(16L, "Amapá", "AP", 1L, "Norte", "1.41", "-51.77"));
-        createUf(new Uf(17L, "Tocantins", "TO", 1L, "Norte", "-9.46", "-48.26"));
+        createUf(new Uf(11L, "Rondônia", "RO", 1L, "Norte", -10.83, -63.34));
+        createUf(new Uf(12L, "Acre", "AC", 1L, "Norte", -8.77, -70.55));
+        createUf(new Uf(13L, "Amazonas", "AM", 1L, "Norte", -3.47, -65.1));
+        createUf(new Uf(14L, "Roraima", "RR", 1L, "Norte", 1.99, -61.33));
+        createUf(new Uf(15L, "Pará", "PA", 1L, "Norte", -3.79, -52.48));
+        createUf(new Uf(16L, "Amapá", "AP", 1L, "Norte", 1.41, -51.77));
+        createUf(new Uf(17L, "Tocantins", "TO", 1L, "Norte", -9.46, -48.26));
 
         /**
          * Nordeste
          */
-        createUf(new Uf(21L, "Maranhão", "MA", 2L, "Nordeste", "-5.42", "-45.44"));
-        createUf(new Uf(22L, "Piauí", "PI", 2L, "Nordeste", "-6.6", "-42.28"));
-        createUf(new Uf(23L, "Ceará", "CE", 2L, "Nordeste", "-5.2", "-39.53"));
-        createUf(new Uf(24L, "Rio Grande do Norte", "RN", 2L, "Nordeste", "-5.81", "-36.59"));
-        createUf(new Uf(25L, "Paraíba", "PB", 2L, "Nordeste", "-7.28", "-36.72"));
-        createUf(new Uf(26L, "Pernambuco", "PE", 2L, "Nordeste", "-8.38", "-37.86"));
-        createUf(new Uf(27L, "Alagoas", "AL", 2L, "Nordeste", "-9.62", "-36.82"));
-        createUf(new Uf(28L, "Sergipe", "SE", 2L, "Nordeste", "-10.57", "-37.45"));
-        createUf(new Uf(29L, "Bahia", "BA", 2L, "Nordeste", "-13.29", "-41.71"));
+        createUf(new Uf(21L, "Maranhão", "MA", 2L, "Nordeste", -5.42, -45.44));
+        createUf(new Uf(22L, "Piauí", "PI", 2L, "Nordeste", -6.6, -42.28));
+        createUf(new Uf(23L, "Ceará", "CE", 2L, "Nordeste", -5.2, -39.53));
+        createUf(new Uf(24L, "Rio Grande do Norte", "RN", 2L, "Nordeste", -5.81, -36.59));
+        createUf(new Uf(25L, "Paraíba", "PB", 2L, "Nordeste", -7.28, -36.72));
+        createUf(new Uf(26L, "Pernambuco", "PE", 2L, "Nordeste", -8.38, -37.86));
+        createUf(new Uf(27L, "Alagoas", "AL", 2L, "Nordeste", -9.62, -36.82));
+        createUf(new Uf(28L, "Sergipe", "SE", 2L, "Nordeste", -10.57, -37.45));
+        createUf(new Uf(29L, "Bahia", "BA", 2L, "Nordeste", -13.29, -41.71));
 
         /**
          * Sudeste
          */
-        createUf(new Uf(31L, "Minas Gerais", "MG", 3L, "Sudeste", "-18.1", "-44.38"));
-        createUf(new Uf(32L, "Espírito Santo", "ES", 3L, "Sudeste", "-19.19", "-40.34"));
-        createUf(new Uf(33L, "Rio de Janeiro", "RJ", 3L, "Sudeste", "-22.25", "-42.66"));
-        createUf(new Uf(35L, "São Paulo", "SP", 3L, "Sudeste", "-22.19", "-48.79"));
+        createUf(new Uf(31L, "Minas Gerais", "MG", 3L, "Sudeste", -18.1, -44.38));
+        createUf(new Uf(32L, "Espírito Santo", "ES", 3L, "Sudeste", -19.19, -40.34));
+        createUf(new Uf(33L, "Rio de Janeiro", "RJ", 3L, "Sudeste", -22.25, -42.66));
+        createUf(new Uf(35L, "São Paulo", "SP", 3L, "Sudeste", -22.19, -48.79));
 
         /**
          * Sul
          */
-        createUf(new Uf(41L, "Paraná", "PR", 4L, "Sul", "-24.89", "-51.55"));
-        createUf(new Uf(42L, "Santa Catarina", "SC", 4L, "Sul", "-27.45", "-50.95"));
-        createUf(new Uf(43L, "Rio Grande do Sul", "RS", 4L, "Sul", "-30.17", "-53.5"));
+        createUf(new Uf(41L, "Paraná", "PR", 4L, "Sul", -24.89, -51.55));
+        createUf(new Uf(42L, "Santa Catarina", "SC", 4L, "Sul", -27.45, -50.95));
+        createUf(new Uf(43L, "Rio Grande do Sul", "RS", 4L, "Sul", -30.17, -53.5));
 
         /**
          * Centro Oeste
          */
-        createUf(new Uf(50L, "Mato Grosso do Sul", "MS", 5L, "Centro-Oeste", "-20.51", "-54.54"));
-        createUf(new Uf(51L, "Mato Grosso", "MT", 5L, "Centro-Oeste", "-12.64", "-55.42"));
-        createUf(new Uf(52L, "Goiás", "GO", 5L, "Centro-Oeste", "-15.98", "-49.86"));
-        createUf(new Uf(53L, "Distrito Federal", "DF", 5L, "Centro-Oeste", "-15.83", "-47.86"));
+        createUf(new Uf(50L, "Mato Grosso do Sul", "MS", 5L, "Centro-Oeste", -20.51, -54.54));
+        createUf(new Uf(51L, "Mato Grosso", "MT", 5L, "Centro-Oeste", -12.64, -55.42));
+        createUf(new Uf(52L, "Goiás", "GO", 5L, "Centro-Oeste", -15.98, -49.86));
+        createUf(new Uf(53L, "Distrito Federal", "DF", 5L, "Centro-Oeste", -15.83, -47.86));
     }
 
     public void createUf(Uf uf) {

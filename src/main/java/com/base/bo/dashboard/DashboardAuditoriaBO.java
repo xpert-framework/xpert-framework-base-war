@@ -103,16 +103,16 @@ public class DashboardAuditoriaBO {
      */
     public List<Object[]> getEventosUsuario(DashboardAuditoria dashboardAuditoria) {
         QueryBuilder queryBuilder = dao.getQueryBuilder()
-                .by("COALESCE(u.userLogin, 'NÃO INFORMADO')")
+                .by("COALESCE(usuario.userLogin, 'NÃO INFORMADO')")
                 .aggregate(
                         sum("CASE WHEN auditingType = 'INSERT' THEN 1 ELSE 0 END"),
                         sum("CASE WHEN auditingType = 'UPDATE' THEN 1 ELSE 0 END"),
                         sum("CASE WHEN auditingType = 'DELETE' THEN 1 ELSE 0 END"),
                         count("a"))
                 .from(Auditing.class, "a")
-                .leftJoin("a.usuario", "u")
+                .leftJoin("a.usuario", "usuario")
                 .orderBy("5")
-                .add(getRestrictions(dashboardAuditoria));
+                .add(getRestrictions(dashboardAuditoria, "a"));
 
         return queryBuilder.getResultList();
     }
@@ -358,24 +358,48 @@ public class DashboardAuditoriaBO {
 
     }
 
+    /**
+     * Retorna as restricoes do objeto
+     *
+     * @param dashboardAuditoria
+     * @return
+     */
     public Restrictions getRestrictions(DashboardAuditoria dashboardAuditoria) {
+        return getRestrictions(dashboardAuditoria, null);
+    }
+
+    /**
+     * Retorna as restricoes do objeto (nesse metodo pode-se passar o alias)
+     *
+     * @param dashboardAuditoria
+     * @param alias
+     * @return
+     */
+    public Restrictions getRestrictions(DashboardAuditoria dashboardAuditoria, String alias) {
+
+        //quando enviar alias concatenar no String (exemplo a.usuario)
+        if (alias == null) {
+            alias = "";
+        } else {
+            alias = alias + ".";
+        }
 
         Restrictions restrictions = new Restrictions();
         if (dashboardAuditoria.getDataInicial() != null) {
-            restrictions.greaterEqualsThan("eventDate", dashboardAuditoria.getDataInicial());
+            restrictions.greaterEqualsThan(alias + "eventDate", dashboardAuditoria.getDataInicial());
         }
         if (dashboardAuditoria.getDataFinal() != null) {
             //menor que o dia +1 para desprezar a hora/minuto/segundo
-            restrictions.lessThan("eventDate", new DateTime(dashboardAuditoria.getDataFinal()).plusDays(1).toDate());
+            restrictions.lessThan(alias + "eventDate", new DateTime(dashboardAuditoria.getDataFinal()).plusDays(1).toDate());
         }
         if (dashboardAuditoria.getUsuarios() != null && !dashboardAuditoria.getUsuarios().isEmpty()) {
-            restrictions.in("usuario", dashboardAuditoria.getUsuarios());
+            restrictions.in(alias + "usuario", dashboardAuditoria.getUsuarios());
         }
         if (dashboardAuditoria.getTipos() != null && !dashboardAuditoria.getTipos().isEmpty()) {
-            restrictions.in("auditingType", dashboardAuditoria.getTipos());
+            restrictions.in(alias + "auditingType", dashboardAuditoria.getTipos());
         }
         if (dashboardAuditoria.getTabelas() != null && !dashboardAuditoria.getTabelas().isEmpty()) {
-            restrictions.in("entity", dashboardAuditoria.getNomesTabelas());
+            restrictions.in(alias + "entity", dashboardAuditoria.getNomesTabelas());
         }
         return restrictions;
     }

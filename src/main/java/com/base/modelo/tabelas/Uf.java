@@ -69,6 +69,16 @@ public class Uf implements Serializable {
         this.latitude = new BigDecimal(latitude);
         this.longitude = new BigDecimal(longitude);
     }
+    
+    public Uf(Long codigoIbge, String nome, String sigla, Long codigoIbgeRegiao, String nomeRegiao, double latitude, double longitude) {
+        this.codigoIbge = codigoIbge;
+        this.nome = nome == null ? nome : nome.trim().toUpperCase();
+        this.sigla = sigla == null ? sigla : sigla.trim().toUpperCase();
+        this.codigoIbgeRegiao = codigoIbgeRegiao;
+        this.nomeRegiao = nomeRegiao == null ? nomeRegiao : nomeRegiao.trim().toUpperCase();
+        this.latitude = new BigDecimal(latitude);
+        this.longitude = new BigDecimal(longitude);
+    }
 
     public BigDecimal getLongitude() {
         return longitude;
