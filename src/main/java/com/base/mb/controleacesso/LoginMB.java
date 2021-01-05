@@ -8,22 +8,24 @@ import com.xpert.i18n.I18N;
 import com.xpert.security.bean.SecurityLoginBean;
 import com.xpert.security.model.User;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author Ayslan
  */
-@ManagedBean
+@Named
+@RequestScoped
 public class LoginMB extends SecurityLoginBean {
 
     @EJB
     private UsuarioDAO usuarioDAO;
     @EJB
     private AcessoSistemaBO acessoSistemaBO;
-    @ManagedProperty(value = "#{sessaoUsuarioMB}")
+    @Inject
     private SessaoUsuarioMB sessaoUsuarioMB;
 
     @Override

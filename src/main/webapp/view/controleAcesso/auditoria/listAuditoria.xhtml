@@ -1,0 +1,284 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces"
+                 >
+    <ui:param name="title" value="#{msg['auditoria.relatorio']}" />
+    <ui:define name="body">
+
+        <h:form id="forListAuditoria">
+
+            <x:modalMessages>
+                <p:autoUpdate/>
+            </x:modalMessages>
+
+            <p:panel header="#{msg['filtros']}"  >
+                <div class="ui-fluid">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="* #{msg['dataInicio']}:" />
+                            <p:calendar  value="#{auditingMB.consultaAuditoria.dataInicial}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="* #{msg['dataFinal']}:" />
+                            <p:calendar  value="#{auditingMB.consultaAuditoria.dataFinal}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['usuarios']}:" />
+                            <p:selectCheckboxMenu  value="#{auditingMB.consultaAuditoria.usuarios}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="entityConverter">
+                                <f:selectItems value="#{findAllBean.get(classMB.usuario)}" var="usuario"
+                                               itemValue="#{usuario}" itemLabel="#{usuario.nome}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['tiposAuditoria']}:" />
+                            <p:selectCheckboxMenu  value="#{auditingMB.consultaAuditoria.tipos}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="omnifaces.GenericEnumConverter" >
+                                <f:selectItems value="#{findAllBean.get(classMB.auditingType)}" var="auditingType"
+                                               itemValue="#{auditingType}" itemLabel="#{xmsg[auditingType.description]}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['tabelas']}:" />
+                            <p:selectCheckboxMenu  value="#{auditingMB.consultaAuditoria.tabelas}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="omnifaces.SelectItemsIndexConverter">
+                                <f:selectItems value="#{auditingMB.tabelas}" var="tabela"
+                                               itemValue="#{tabela}" itemLabel="#{tabela.nome}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <p:selectBooleanCheckbox id="agruparLinhaTempoUsuario" value="#{auditingMB.consultaAuditoria.agruparLinhaTempoUsuario}"/>
+                            <h:outputLabel for="agruparLinhaTempoUsuario" value="#{msg['auditoria.agruparLinhaTempoUsuario']}" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="uix-center">
+
+                    <p:commandButton process="@form" update="@form" value="#{msg['filtrar']}" 
+                                     icon="fas fa-search" action="#{auditingMB.consultar}"  />
+
+                    <p:commandButton process="@this" update="@form" value="#{msg['limpar']}" 
+                                     icon="fas fa-times" action="#{auditingMB.limpar}"  />
+
+                </div>
+                <div class="clearfix"></div>
+            </p:panel>
+
+
+
+            <h:panelGroup layout="block" id="panelResultado" styleClass="ui-fluid">
+
+                <p:tabView id="tabViewAuditing">
+                    <p:tab>
+                        <f:facet name="title">
+                            #{msg['linhaDoTempo']} <i class="fas fa-chart-line"></i>
+                        </f:facet>
+                        <style>
+                            .timeline-event{
+                                color: #000 !important;
+                            }
+                            .timeline-event.insert{
+                                background-color: rgb(75, 192, 192) !important;
+                            }
+                            .timeline-event.delete{
+                                background-color: rgb(255, 99, 132) !important;
+                            }
+                            .timeline-event.update{
+                                background-color: rgb(255, 205, 86) !important;
+                            }
+                            .timeline-event.timeline-event-selected {  
+                                background-color: #BECEFE  !important;  
+                                border-color: #97B0F8 !important;  
+                            } 
+                        </style>
+
+                        <h:outputText rendered="#{not empty auditingMB.auditings}" value="#{auditingMB.auditings.size()} evento(s) encontrados"/>
+
+                        <p:timeline id="timeline" value="#{auditingMB.timelineModel}" height="auto"
+                                    var="audit"
+                                    varGroup="auditGroup"
+                                    selectable="true"
+                                    zoomable="true"
+                                    moveable="true"
+                                    zoomMin="#{1000 * 60 * 5 * 24 }"
+                                    zoomMax="#{1000 * 60 * 60 * 24 * 60 * 30}"
+                                    showNavigation="true"
+                                    locale="#{localeBean.locale}"
+                                    axisOnTop="true"
+                                    min="#{auditingMB.consultaAuditoria.dataInicial}"
+                                    showCurrentTime="true">
+
+                            <f:facet name="group">
+                                <i class="fas fa-user"></i><h:outputText value=" #{auditGroup.nome}" />
+                            </f:facet>
+
+                            <p:ajax event="select" listener="#{auditingMB.onSelect}" update=":formDetalheAudit" oncomplete="PF('dialogDetalheAudit').show()"/>
+
+                            <div style="font-size: 12px;">
+                                <h:outputText value="#{xmsg[audit.auditingType.description]}" style="font-weight: bold;"/> <i class="#{audit.icon}"></i>
+                                <div style="width: 100%; border-top: 1px solid"/>
+                                <h:outputText value="#{audit.entityName}" style="font-weight: bold;"/><br/>
+                                <h:outputText value="(ID #{audit.identifier})"  style="font-size: 10px;" /><br/>
+
+                                <i class="fas fa-user"></i><h:outputText value=" #{audit.usuario.userLogin}"  style="font-size: 10px;" />
+                            </div>
+
+                        </p:timeline>
+                    </p:tab>
+                    <p:tab>
+                        <f:facet name="title">
+                            #{msg['tabela']} <i class="fas fa-border-all"></i>
+                        </f:facet>
+                        <div class="uix-table-actions"  >
+                            <x:dataTableExporter target=":forListAuditoria:tabViewAuditing:dataTableAuditing" fileName="Auditing_List" landscape="true"/>
+                        </div>
+
+                        <p:dataTable var="audit" emptyMessage="#{xmsg.noRecordFound}" paginator="true"
+                                     rowsPerPageTemplate="10,20,30"  rows="10" paginatorPosition="bottom"
+                                     currentPageReportTemplate="#{xpert.defaultCurrentPageReportTemplate}"
+                                     paginatorTemplate="#{xpert.defaultPaginatorTemplate}"
+                                     id="dataTableAuditing"
+                                     sortBy="#{audit.eventDate}" sortOrder="descending"
+                                     value="#{auditingMB.auditings}" rowIndexVar="index">
+                            <p:column style="text-align: center;">
+                                <f:facet name="header">-</f:facet>
+                                <h:outputText value="#{index+1}" />
+                            </p:column>
+                            <p:column style="text-align: center;" sortBy="#{audit.eventDate}" headerText="#{xmsg.date}"  >
+                                <f:facet name="header">
+                                    <h:outputText value="#{xmsg.date}"/>
+                                </f:facet>
+                                <h:outputText value="#{audit.eventDate}" >
+                                    <f:convertDateTime dateStyle="medium" type="both"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center;" sortBy="#{audit.auditingType}" headerText="#{xmsg.type}" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{xmsg.type}"/>
+                                </f:facet>
+                                <h:outputText value="#{xmsg[audit.auditingType.description]}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.table}" sortBy="#{audit.entityName}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{xmsg.table}"/>
+                                </f:facet>
+                                <h:outputText value="#{audit.entityName}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.id}" sortBy="#{audit.identifier}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{xmsg.id}"/>
+                                </f:facet>
+                                <h:outputText value="#{audit.identifier}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.user}" sortBy="#{audit.userName}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{xmsg.user}"/>
+                                </f:facet>
+                                <h:outputText value="#{audit.userName}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.ip}" sortBy="#{audit.ip}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{xmsg.ip}"/>
+                                </f:facet>
+                                <h:outputText value="#{audit.ip}" />
+                            </p:column>
+                            <p:column exportable="false" styleClass="uix-datatable-actions">
+                                <p:commandButton process="@this" update=":formDetalheAudit" oncomplete="PF('dialogDetalheAudit').show()"
+                                                 icon="#{icons.detail}" title="#{xmsg['detail']}">
+                                    <f:setPropertyActionListener value="#{audit}" target="#{auditingMB.auditing}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:tab>
+                </p:tabView>
+
+
+            </h:panelGroup>
+        </h:form>
+
+        <p:dialog responsive="true" widgetVar="dialogDetalheAudit" header="#{msg['auditoria.detail']}">
+            <h:form id="formDetalheAudit" >
+                <p:tabView styleClass="font-12">
+                    <p:tab title="#{msg['auditoria.eventoSelecionado']}">
+
+                        <div class="ui-fluid">
+                            <div class="ui-g" >
+                                <div class="ui-g-12 ui-md-6 ui-lg-4 font-12">
+                                    <h:outputLabel value="#{xmsg.date}:" /><br/>
+                                    <h:outputText value="#{auditingMB.auditing.eventDate}" >
+                                        <f:convertDateTime dateStyle="medium" type="both"/>
+                                    </h:outputText>
+                                </div>
+                                
+                                <div class="ui-g-12 ui-md-6 ui-lg-4 font-12">
+                                    <h:outputLabel value="#{xmsg.type}:" /><br/>
+                                    <h:outputText value="#{xmsg[auditingMB.auditing.auditingType.description]}" />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-6 ui-lg-4 font-12">
+                                    <h:outputLabel value="#{xmsg.table}:" /><br/>
+                                    <h:outputText value="#{auditingMB.auditing.entityName}" />
+                                </div>
+
+                                <div class="ui-g-12 ui-md-12 ui-lg-12 font-12">
+                                    <h:outputLabel value="#{xmsg.user}:" /><br/>
+                                    <h:outputText value="#{auditingMB.auditing.userName}" />
+                                </div>
+                                
+
+                                <div class="ui-g-12 ui-md-6 ui-lg-6 font-12">
+                                    <h:outputLabel value="#{xmsg.id}:" /><br/>
+                                    <h:outputText value="#{auditingMB.auditing.identifier}" />
+                                </div>
+
+
+                                <div class="ui-g-12 ui-md-6 ui-lg-6 font-12">
+                                    <h:outputLabel value="#{xmsg.ip}:" /><br/>
+                                    <h:outputText value="#{auditingMB.auditing.ip}" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <p:dataTable var="metadata" emptyMessage="#{xmsg.noRecordFound}" styleClass="font-12"
+                                     value="#{auditingMB.auditing.metadatas}" rowIndexVar="index">
+                            <f:facet name="header">
+                                <h:outputText styleClass="font-12" value="#{msg['auditoria.valoresAlterados']}" />
+                            </f:facet>
+                            <x:initializer />
+                            <p:column style="text-align: center;">
+                                <h:outputText value="#{index+1}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.field}">
+                                <h:outputText value=" #{metadata.fieldName}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.oldValue}">
+                                <h:outputText value="#{metadata.oldValue}" />
+                            </p:column>
+                            <p:column headerText="#{xmsg.newValue}">
+                                <h:outputText value="#{metadata.newValue}" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:tab>
+                    <p:tab title="#{msg['auditoria.historico']}">
+                        <x:audit for="#{auditingMB.auditing}" collapsed="false"  />
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </p:dialog>
+
+
+
+
+    </ui:define>
+</ui:composition>

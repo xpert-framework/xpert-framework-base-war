@@ -1,0 +1,52 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:dashboard="http://xmlns.jcp.org/jsf/composite/components/dashboard"
+                 xmlns:x="http://xpert.com/faces">
+    <p:tabView orientation="right" id="tabViewAcessosDia">
+        <p:tab>
+            <f:facet name="title">
+                <i class="fas fa-chart-line"></i>
+            </f:facet>
+            <p:lineChart model="#{dashboardAcessoMB.dashboardAcesso.graficoAcessosDia}" style="width: 100%; height: 300px;"/>
+        </p:tab>
+        <p:tab>
+            <f:facet name="title">
+                <i class="fas fa-border-all"></i>
+            </f:facet>
+            <div style="height: 300px;">
+                <dashboard:dataTableExporter fileName="Acessos_Dia" target=":formDashboardAcessos:tabViewAcessosDia:dataTableAcessosDia" />
+
+                <p:dataTable id="dataTableAcessosDia" value="#{dashboardAcessoMB.dashboardAcesso.acessosDia}" scrollable="true" scrollHeight="200" var="objeto">
+                    <p:column sortBy="#{objeto[0]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['data']}"/>
+                        </f:facet>
+                        <h:outputText value="#{objeto[0]}" rendered="#{objeto[0].class.name.contains('Date')}"  >
+                            <f:convertDateTime pattern="#{formatMB.format.data}"/>
+                        </h:outputText>
+                        <h:outputText value="#{objeto[0]}" rendered="#{not objeto[0].class.name.contains('Date')}" />
+                        <f:facet name="footer">
+                            <h:outputText value="#{msg['total']}" />
+                        </f:facet>
+                    </p:column>
+                    <p:column style="text-align: right" sortBy="#{objeto[1]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['quantidade']}"/>
+                        </f:facet>
+                        <h:outputText value="#{objeto[1]}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                        <f:facet name="footer">
+                            <h:outputText value="#{x:sum(dashboardAcessoMB.dashboardAcesso.acessosDia, '1')}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </f:facet>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </p:tab>
+    </p:tabView>
+</ui:composition>

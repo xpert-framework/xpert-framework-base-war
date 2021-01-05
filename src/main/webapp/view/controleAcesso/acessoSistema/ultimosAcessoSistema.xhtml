@@ -18,13 +18,22 @@
                          paginatorTemplate="#{acessoSistemaUsuarioMB.dataModel.paginatorTemplate}"
                          value="#{acessoSistemaUsuarioMB.dataModel}" lazy="true" >
                 <p:column style="text-align: center;">
+                    <f:facet name="header">-</f:facet>
                     <h:outputText value="#{index+1}"/>
                 </p:column>
                 <p:column headerText="#{msg['acessoSistema.dataHora']}" sortBy="#{acessoSistema.dataHora}"
-                          style="text-align: center;" filterBy="#{acessoSistema.dataHora}">
+                          style="text-align: center;" exportable="false" filterBy="#{acessoSistema.dataHora}">
                     <f:facet name="header">
                         #{msg['acessoSistema.dataHora']}
                         <x:dateFilter/>
+                    </f:facet>
+                    <h:outputText value="#{acessoSistema.dataHora}">
+                        <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="text-align: center; display: none;">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['acessoSistema.dataHora']}"/>
                     </f:facet>
                     <h:outputText value="#{acessoSistema.dataHora}">
                         <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>

@@ -162,26 +162,26 @@ public class UsuarioMenuBO {
 
     public List<MenuElement> getMenuElements(List<Permissao> permissoes) {
 
-        List<MenuElement> elements = new ArrayList<MenuElement>();
+        List<MenuElement> elements = new ArrayList<>();
 
         //urls dinamicas
         if (permissoes != null && !permissoes.isEmpty()) {
 
             //map para evitar a duplicidade e ter acesso mais rapido as menus
-            Map<Permissao, DefaultSubMenu> subMenuMap = new HashMap<Permissao, DefaultSubMenu>();
-            Map<Permissao, DefaultMenuItem> itemMenuMap = new HashMap<Permissao, DefaultMenuItem>();
+            Map<Permissao, DefaultSubMenu> subMenuMap = new HashMap<>();
+            Map<Permissao, DefaultMenuItem> itemMenuMap = new HashMap<>();
 
             //map para vincular o item do menu a permissao
-            Map<MenuElement, Permissao> permissaoMap = new HashMap<MenuElement, Permissao>();
+            Map<MenuElement, Permissao> permissaoMap = new HashMap<>();
 
             //primeiro "for" para adicionar os submenus
             for (Permissao permissao : permissoes) {
-                putSubmenu(permissao, subMenuMap, elements, permissaoMap);
+                putSubmenu(permissao, subMenuMap, itemMenuMap, elements, permissaoMap);
             }
 
             //montar itens
             for (Permissao permissao : permissoes) {
-                if (permissao.isPossuiMenu() && permissao.isAtivo()) {
+                if (permissao.isAtivo()) {
                     putItemMenu(permissao, subMenuMap, itemMenuMap, elements, permissaoMap);
                 }
             }
@@ -235,15 +235,15 @@ public class UsuarioMenuBO {
     public DefaultMenuItem getMenuHome() {
         DefaultMenuItem item = new DefaultMenuItem();
         item.setValue(I18N.get("menu.home"));
-        item.setIcon("ui-icon-home");
-        item.setUrl("/view/home.jsf");
+        item.setIcon("fas fa-home");
+        item.setOutcome("/view/home.jsf");
         return item;
     }
 
     public DefaultMenuItem getMenuSair() {
         DefaultMenuItem item = new DefaultMenuItem();
         item.setValue(I18N.get("menu.sair"));
-        item.setIcon("ui-icon-close");
+        item.setIcon("fas fa-sign-out-alt");
         item.setCommand("#{loginMB.logout}");
         return item;
     }
@@ -255,6 +255,7 @@ public class UsuarioMenuBO {
             return;
         }
         String url = permissao.getUrlMenuVerificado();
+        //se possui URL informada
         if (url != null && !url.trim().isEmpty()) {
             Submenu submenu = null;
             Permissao permissaoPai = permissaoDAO.getInitialized(permissao.getPermissaoPai());
@@ -262,16 +263,19 @@ public class UsuarioMenuBO {
                 submenu = subMenuMap.get(permissaoPai);
                 //adicionar o menu pai quando não encontrado
                 if (submenu == null) {
-                    putSubmenu(permissaoPai, subMenuMap, elements, permissaoMap);
+                    putSubmenu(permissaoPai, subMenuMap, itemMenuMap, elements, permissaoMap);
                     submenu = subMenuMap.get(permissaoPai);
                 }
             }
             //se o menu pai for nulo ou se encontrou o menu pai e ele possui menu pai
-            if (permissaoPai == null || submenu != null) {
+            if (permissaoPai == null || submenu != null && permissao.isPossuiMenu()) {
                 DefaultMenuItem item = new DefaultMenuItem();
                 item.setId(permissao.getId().toString());
+                if (permissao.getIcone() != null && !permissao.getIcone().trim().isEmpty()) {
+                    item.setIcon(permissao.getIcone());
+                }
                 item.setValue(permissao.getNomeMenuVerificado());
-                item.setUrl(permissao.getUrlMenuVerificado());
+                item.setOutcome(permissao.getUrlMenuVerificado());
                 itemMenuMap.put(permissao, item);
                 permissaoMap.put(item, permissao);
                 //adicionar ao submenu quando encontrado, senao adicionar ao root
@@ -284,23 +288,27 @@ public class UsuarioMenuBO {
         }
     }
 
-    public void putSubmenu(Permissao permissao, Map<Permissao, DefaultSubMenu> subMenuMap, List<MenuElement> elements, Map<MenuElement, Permissao> permissaoMap) {
+    public void putSubmenu(Permissao permissao, Map<Permissao, DefaultSubMenu> subMenuMap, Map<Permissao, DefaultMenuItem> itemMenuMap, List<MenuElement> elements, Map<MenuElement, Permissao> permissaoMap) {
         if (permissao != null) {
             if (permissao.isPossuiMenu() && permissao.isAtivo()) {
                 String url = permissao.getUrlMenuVerificado();
+                //caso o Pai possua URL entao ele nao eh submenu e sim o proprio menu
                 if (url == null || url.trim().isEmpty()) {
                     DefaultSubMenu submenu = subMenuMap.get(permissao);
                     //caso a permissao tenha pai deve ser adicionado um submenu desse pai quando nao encontrado
                     if (submenu == null) {
                         submenu = new DefaultSubMenu();
                         submenu.setId(permissao.getId().toString());
+                        if (permissao.getIcone() != null && !permissao.getIcone().trim().isEmpty()) {
+                            submenu.setIcon(permissao.getIcone());
+                        }
                         submenu.setLabel(permissao.getNomeMenuVerificado());
                         subMenuMap.put(permissao, submenu);
                         permissaoMap.put(submenu, permissao);
                         Submenu pai = null;
                         Permissao permissaoPai = permissaoDAO.getInitialized(permissao.getPermissaoPai());
                         if (permissaoPai != null && permissaoPai.isAtivo()) {
-                            putSubmenu(permissaoPai, subMenuMap, elements, permissaoMap);
+                            putSubmenu(permissaoPai, subMenuMap, itemMenuMap, elements, permissaoMap);
                             pai = subMenuMap.get(permissaoPai);
                         }
                         //setar submenupai
@@ -313,6 +321,9 @@ public class UsuarioMenuBO {
                             }
                         }
                     }
+                } else {
+                    //criar item de menu e nao submenu
+                    putItemMenu(permissao, subMenuMap, itemMenuMap, elements, permissaoMap);
                 }
             }
         }

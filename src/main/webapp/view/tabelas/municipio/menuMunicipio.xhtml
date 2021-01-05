@@ -1,0 +1,20 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:x="http://xpert.com/faces">
+    <p:toolbar>
+        <p:toolbarGroup align="left">
+            <x:securityArea rolesAllowed="municipio.list">
+                <p:button icon="#{icons.search}" value="#{xmsg['list']}" outcome="listMunicipio" />
+            </x:securityArea>
+            <x:securityArea rolesAllowed="municipio.create">
+                <p:button icon="#{icons.create}" value="#{xmsg['create']}" outcome="createMunicipio" />
+            </x:securityArea>
+            <x:securityArea rolesAllowed="municipio.import">
+                <p:button icon="fas fa-upload" value="#{msg['importar']}" outcome="importMunicipio" />
+            </x:securityArea>
+        </p:toolbarGroup>
+    </p:toolbar>
+</ui:composition>

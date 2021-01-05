@@ -37,8 +37,6 @@ public class SolicitacaoRecuperacaoSenhaBO extends AbstractBusinessObject<Solici
     @EJB
     private UsuarioDAO usuarioDAO;
     @EJB
-    private ModeloEmailBO modeloEmailBO;
-    @EJB
     private EmailBO emailBO;
 
     @Override

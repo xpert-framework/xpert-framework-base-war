@@ -1,0 +1,111 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces">
+    <ui:param name="title" value="#{msg['uf.list']}" />
+    <ui:define name="body">
+        <ui:include src="menuUf.xhtml" />
+        <h:form id="formListUf">
+            <x:modalMessages/>
+
+            <x:dataTableActions fileName="uf_export" target=":formListUf:dataTableUf"
+                                widgetVar="dataTableUfWidget"  />
+
+            <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,20,30" paginatorPosition="bottom" emptyMessage="#{xmsg['noRecordFound']}"
+                         var="uf" rowIndexVar="index" id="dataTableUf" widgetVar="dataTableUfWidget" styleClass="table-responsive"
+                         currentPageReportTemplate="#{ufMB.dataModel.currentPageReportTemplate}"
+                         paginatorTemplate="#{ufMB.dataModel.paginatorTemplate}"
+                         value="#{ufMB.dataModel}" lazy="true" >
+                <p:column styleClass="uix-datatable-index">
+                    <f:facet name="header">-</f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.codigoIbge']}" sortBy="#{uf.codigoIbge}"
+                          filterBy="#{uf.codigoIbge}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.codigoIbge']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.codigoIbge}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.nome']}" sortBy="#{uf.nome}"
+                          filterBy="#{uf.nome}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.nome']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.nome}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.sigla']}" sortBy="#{uf.sigla}"
+                          filterBy="#{uf.sigla}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.sigla']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.sigla}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.codigoIbgeRegiao']}" sortBy="#{uf.codigoIbgeRegiao}"
+                          filterBy="#{uf.codigoIbgeRegiao}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.codigoIbgeRegiao']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.codigoIbgeRegiao}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.nomeRegiao']}" sortBy="#{uf.nomeRegiao}"
+                          filterBy="#{uf.nomeRegiao}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.nomeRegiao']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.nomeRegiao}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.latitude']}" sortBy="#{uf.latitude}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.latitude']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.latitude}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['uf.longitude']}" sortBy="#{uf.longitude}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.longitude']}" />
+                    </f:facet>
+                    <h:outputText value="#{uf.longitude}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="uix-datatable-actions" exportable="false" headerText="#{xmsg['actions']}">
+                    <f:facet name="header">
+                        <h:outputText value="#{xmsg['actions']}"/>
+                    </f:facet>
+                    <p:commandButton oncomplete="PF('widgetUfDetail').show();"  icon="#{icons.detail}" 
+                                     process="@form" update=":formDetailUf" title="#{xmsg['detail']}" >
+                        <f:setPropertyActionListener value="#{uf}" target="#{ufMB.entity}" />
+                    </p:commandButton>
+                    <x:securityArea rolesAllowed="uf.create">
+                        <p:button icon="#{icons.edit}" outcome="createUf" title="#{xmsg['edit']}">
+                            <f:param name="id" value="#{uf.id}" />
+                        </p:button>
+                    </x:securityArea>
+                    <x:securityArea rolesAllowed="uf.delete">
+                        <p:commandButton icon="#{icons.delete}" title="#{xmsg['delete']}" process="@form" update="@form" 
+                                         action="#{ufMB.delete}" >
+                            <f:setPropertyActionListener value="#{uf.id}" target="#{ufMB.id}" />
+                            <x:confirmation message="#{xmsg['confirmDelete']} - #{uf}" />
+                        </p:commandButton>
+                    </x:securityArea>
+                </p:column>
+            </p:dataTable>
+            <div class="uix-audit-delete">
+                <x:securityArea rolesAllowed="uf.audit">
+                    <x:auditDelete for="#{ufMB.entityClass}"/>
+                </x:securityArea>
+            </div>  
+        </h:form>
+
+        <p:dialog widgetVar="widgetUfDetail" header="#{msg['uf.detail']}" appendTo="@(body)" 
+                  modal="true" styleClass="uix-dialog-fluid" >
+            <ui:include src="detailUf.xhtml" />
+        </p:dialog>
+    </ui:define>
+</ui:composition>

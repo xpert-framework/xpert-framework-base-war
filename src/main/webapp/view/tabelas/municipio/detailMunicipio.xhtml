@@ -1,0 +1,60 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:x="http://xpert.com/faces">
+    <h:form id="formDetailMunicipio" styleClass="uix-form-detail">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['municipio.codigoIbge']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.codigoIbge}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['municipio.nome']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.nome}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['municipio.capital']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.capital}" converter ="yesNoConverter"  styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['municipio.uf']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.uf}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.codigoIbge']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.uf.codigoIbge}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.codigoIbgeRegiao']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.uf.codigoIbgeRegiao}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.nomeRegiao']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.uf.nomeRegiao}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['municipio.latitude']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.latitude}" styleClass="uix-content-detail">
+                        <f:convertNumber />
+                    </h:outputText>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['municipio.longitude']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{municipioMB.entity.longitude}" styleClass="uix-content-detail">
+                        <f:convertNumber />
+                    </h:outputText>
+                </div>
+            </div>
+        </div>
+        <p:separator/>
+        <div class="uix-center">
+            <p:commandButton type="button" value="#{xmsg['close']}" onclick="PF('widgetMunicipioDetail').hide()" />
+            <x:securityArea rolesAllowed="municipio.audit">
+                <x:audit for="#{municipioMB.entity}"/>
+            </x:securityArea>
+        </div>
+    </h:form>
+</ui:composition>

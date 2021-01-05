@@ -5,7 +5,6 @@
                  xmlns:p="http://primefaces.org/ui"
                  template="/template/mainTemplate.xhtml"
                  xmlns:x="http://xpert.com/faces"
-                 xmlns:custom="http://java.sun.com/jsf/composite/components"
                  >
     <ui:param name="title" value="#{msg['erroSistema.list']}" />
     <ui:define name="body">
@@ -23,6 +22,9 @@
                 <p:column headerText="#{msg['erroSistema.id']}" sortBy="#{erroSistema.id}"
                           filterBy="#{erroSistema.id}"
                           styleClass="uix-datatable-index">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['erroSistema.id']}"/>
+                    </f:facet>
                     <h:outputText value="#{erroSistema.id}"/>
                 </p:column>
                 <p:column sortBy="#{erroSistema.data}" filterBy="#{erroSistema.data}"
@@ -63,16 +65,16 @@
                     <f:facet name="header">
                         <h:outputText value="#{xmsg['actions']}"/>
                     </f:facet>
-                    <p:commandButton oncomplete="PF('widgetErroSistemaDetail').show();"  icon="ui-icon-zoomin" process="@form" update=":formDetailErroSistema" >
+                    <p:commandButton oncomplete="PF('widgetErroSistemaDetail').show();"  icon="#{icons.detail}" process="@form" update=":formDetailErroSistema" >
                         <f:setPropertyActionListener value="#{erroSistema}" target="#{erroSistemaMB.entity}" />
                     </p:commandButton>
                     <x:securityArea rolesAllowed="erroSistema.create">
-                        <p:button icon="ui-icon-pencil" outcome="createErroSistema" >
+                        <p:button icon="#{icons.edit}" outcome="createErroSistema" >
                             <f:param name="id" value="#{erroSistema.id}" />
                         </p:button>
                     </x:securityArea>
                     <x:securityArea rolesAllowed="erroSistema.delete">
-                        <p:commandButton icon="ui-icon-trash" process="@form" update="@form" action="#{erroSistemaMB.delete}" >
+                        <p:commandButton icon="#{icons.delete}" process="@form" update="@form" action="#{erroSistemaMB.delete}" >
                             <f:setPropertyActionListener value="#{erroSistema.id}" target="#{erroSistemaMB.id}" />
                             <x:confirmation message="#{xmsg['confirmDelete']} - #{erroSistema}" />
                         </p:commandButton>

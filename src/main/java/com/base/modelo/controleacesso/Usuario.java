@@ -22,13 +22,18 @@ public class Usuario implements Serializable, User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataUltimoAcesso;
+
     @NotBlank
     private String nome;
 
+    @Column(unique = true)
     @Size(max = 16)
     @NotBlank
     private String cpf;
 
+    @Column(unique = true)
     @NotBlank
     @Size(max = 150)
     @Email
@@ -40,6 +45,7 @@ public class Usuario implements Serializable, User {
     @Size(max = 230)
     private String rg;
 
+    @Column(unique = true)
     @NotBlank
     @Size(min = 4)
     private String userLogin;
@@ -57,6 +63,10 @@ public class Usuario implements Serializable, User {
     @JoinTable(name = "usuario_perfil", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "perfil_id"))
     private List<Perfil> perfis;
 
+    @ManyToMany(targetEntity = Permissao.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "usuario_favoritos", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+    private List<Permissao> favoritos;
+
     @NotAudited
     @OrderBy("dataSituacao DESC")
     @OneToMany(mappedBy = "usuario")
@@ -67,6 +77,8 @@ public class Usuario implements Serializable, User {
     private Boolean emailCadastroEnviado;
 
     private Boolean senhaCadastrada;
+
+    private String tema;
 
     public Usuario() {
         senhaCadastrada = false;
@@ -96,6 +108,30 @@ public class Usuario implements Serializable, User {
             emailCadastroEnviado = false;
         }
         return emailCadastroEnviado;
+    }
+
+    public String getTema() {
+        return tema;
+    }
+
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
+
+    public List<Permissao> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(List<Permissao> favoritos) {
+        this.favoritos = favoritos;
+    }
+
+    public Date getDataUltimoAcesso() {
+        return dataUltimoAcesso;
+    }
+
+    public void setDataUltimoAcesso(Date dataUltimoAcesso) {
+        this.dataUltimoAcesso = dataUltimoAcesso;
     }
 
     public void setEmailCadastroEnviado(Boolean emailCadastroEnviado) {
@@ -241,7 +277,6 @@ public class Usuario implements Serializable, User {
         }
         return true;
     }
-    
 
     @Override
     public String toString() {

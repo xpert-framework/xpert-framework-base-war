@@ -30,7 +30,7 @@ public class PermissaoDAOImpl extends BaseDAOImpl<Permissao> implements Permissa
     public List<Permissao> getPermissoes(boolean apenasAtivas) {
         StringBuilder builder = new StringBuilder();
         //trazer todas permissoes
-        builder.append("SELECT p FROM ").append(Permissao.class.getName()).append(" p ");
+        builder.append("SELECT p FROM ").append(Permissao.class.getName()).append(" p LEFT JOIN FETCH p.permissoesFilhas pf ");
         if (apenasAtivas == true) {
             builder.append(" WHERE p.ativo = true ");
         }
@@ -49,13 +49,13 @@ public class PermissaoDAOImpl extends BaseDAOImpl<Permissao> implements Permissa
     public List<Permissao> getPermissoes(Usuario usuario, boolean apenasAtivas) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("SELECT DISTINCT p FROM ").append(Permissao.class.getName()).append(" p ");
+        builder.append("SELECT DISTINCT p FROM ").append(Permissao.class.getName()).append(" p LEFT JOIN FETCH p.permissoesFilhas pf ");
         builder.append("LEFT JOIN p.perfis pe ");
         builder.append("LEFT JOIN pe.usuarios u ");
         builder.append("WHERE (u = :usuario or p.global = true) ");
-        
+
         if (apenasAtivas == true) {
-            builder.append(" AND (p.ativo = true) ");
+            builder.append(" AND (p.ativo = true) AND (pe.ativo = true)");
         }
         builder.append("ORDER BY p.descricao ");
 
@@ -106,6 +106,21 @@ public class PermissaoDAOImpl extends BaseDAOImpl<Permissao> implements Permissa
 
         builder.append("SELECT DISTINCT p FROM ").append(Usuario.class.getName()).append(" u ");
         builder.append("LEFT JOIN u.perfis pe INNER JOIN pe.permissoesAtalho p ");
+        builder.append("WHERE u = :usuario AND p.url IS NOT NULL AND p.ativo = true AND pe.ativo = true ");
+        builder.append("ORDER BY p.descricao ");
+
+        Query query = getEntityManager().createQuery(builder.toString());
+        query.setParameter("usuario", usuario);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Permissao> getPermissoesFavoritas(Usuario usuario) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("SELECT DISTINCT p FROM ").append(Usuario.class.getName()).append(" u ");
+        builder.append(" INNER JOIN u.favoritos p ");
         builder.append("WHERE u = :usuario AND p.url IS NOT NULL AND p.ativo = true ");
         builder.append("ORDER BY p.descricao ");
 

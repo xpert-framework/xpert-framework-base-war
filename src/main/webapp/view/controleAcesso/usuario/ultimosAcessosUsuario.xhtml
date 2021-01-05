@@ -1,0 +1,58 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:x="http://xpert.com/faces"
+                 >
+
+
+    <x:dataTableActions target=":formDetailUsuario:tabViewUsuario:dataTableAcessoSistema" 
+                        widgetVar="dataTableAcessoSistemaWidget" fileName="Acessos - #{usuarioMB.entity.nome}" />
+
+    <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,20,30" paginatorPosition="bottom" emptyMessage="#{xmsg['noRecordFound']}"
+                 var="acessoSistema" rowIndexVar="index" id="dataTableAcessoSistema"
+                 widgetVar="dataTableAcessoSistemaWidget"
+                 currentPageReportTemplate="#{usuarioMB.ultimosAcessos.currentPageReportTemplate}"
+                 paginatorTemplate="#{usuarioMB.ultimosAcessos.paginatorTemplate}"
+                 value="#{usuarioMB.ultimosAcessos}" lazy="true" >
+        <p:column style="text-align: center;">
+            <f:facet name="header">-</f:facet>
+            <h:outputText value="#{index+1}"/>
+        </p:column>
+        <p:column headerText="#{msg['acessoSistema.dataHora']}" sortBy="#{acessoSistema.dataHora}" exportable="false"
+                  style="text-align: center;" filterBy="#{acessoSistema.dataHora}">
+            <f:facet name="header">
+                <h:outputText value="#{msg['acessoSistema.dataHora']}"/>
+                <x:dateFilter/>
+            </f:facet>
+            <h:outputText value="#{acessoSistema.dataHora}">
+                <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+            </h:outputText>
+        </p:column>
+        <p:column headerText="#{msg['acessoSistema.dataHora']}" style="display: none;">
+            <f:facet name="header">
+                <h:outputText value="#{msg['acessoSistema.dataHora']}"/>
+            </f:facet>
+            <h:outputText value="#{acessoSistema.dataHora}">
+                <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+            </h:outputText>
+        </p:column>
+        <p:column headerText="#{msg['acessoSistema.ip']}" sortBy="#{acessoSistema.ip}"
+                  filterBy="#{acessoSistema.ip}"
+                  >
+            <f:facet name="header">
+                <h:outputText value="#{msg['acessoSistema.ip']}"/>
+            </f:facet>
+            <h:outputText value="#{acessoSistema.ip}"/>
+        </p:column>
+        <p:column headerText="#{msg['acessoSistema.userAgent']}" sortBy="#{acessoSistema.userAgent}"
+                  filterBy="#{acessoSistema.userAgent}"
+                  >
+            <f:facet name="header">
+                <h:outputText value="#{msg['acessoSistema.userAgent']}"/>
+            </f:facet>
+            <h:outputText value="#{acessoSistema.userAgent}"/>
+        </p:column>
+    </p:dataTable>
+</ui:composition>

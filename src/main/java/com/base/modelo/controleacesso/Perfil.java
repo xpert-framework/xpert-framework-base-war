@@ -14,6 +14,7 @@ public class Perfil implements Serializable {
     @GeneratedValue(generator = "Perfil")
     private Long id;
 
+    @Column(unique = true)
     @NotBlank
     private String descricao;
     private Boolean ativo = true;

@@ -4,7 +4,6 @@
                  xmlns:ui="http://java.sun.com/jsf/facelets"
                  xmlns:p="http://primefaces.org/ui"
                  xmlns:x="http://xpert.com/faces"
-                 xmlns:custom="http://java.sun.com/jsf/composite/components"
                  >
     <h:form id="formDetailPermissao" styleClass="uix-form-detail">
         <p:accordionPanel multiple="true" activeIndex="0,1,2,3">
@@ -44,17 +43,20 @@
                                 <h:outputText value="#{permissaoMB.entity.ativo}" converter="yesNoConverter"/>
                             </span>
                         </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                            <h:outputLabel value="#{msg['permissao.icone']}:" styleClass="control-label"/><br/>
+                            <span class="uix-content-detail">
+                                <i title="#{permissao.icone}" class="#{permissaoMB.entity.icone}"></i> 
+                                <h:outputText value=" #{permissaoMB.entity.icone}" />
+                            </span>
+                        </div>
+                        
+                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <h:outputLabel value="#{msg['permissao.url']}:" styleClass="control-label"/><br/>
                             <span class="uix-content-detail">
                                 <h:outputText value="#{permissaoMB.entity.url}"/>
                             </span>
                         </div>
-
-
                     </div>
                 </div>
             </p:tab>

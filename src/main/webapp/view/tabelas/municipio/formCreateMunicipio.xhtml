@@ -1,0 +1,64 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:x="http://xpert.com/faces">
+
+
+    <h:form id="formCreateMunicipio" >
+        <p:fieldset legend="#{xmsg['generalData']}">
+            <x:modalMessages/>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <h:outputLabel for="codigoIbge" value="* #{msg['municipio.codigoIbge']}:" />
+                        <p:inputMask id="codigoIbge" mask="9?999999999" slotChar="" value="#{municipioMB.entity.codigoIbge}" styleClass="form-control" />
+                    </div>
+                    <div class="form-group col-lg-8 col-md-6 col-sm-6 col-xs-12">
+                        <h:outputLabel for="nome" value="* #{msg['municipio.nome']}:" />
+                        <p:inputText id="nome" value="#{municipioMB.entity.nome}" maxlength="200"  styleClass="form-control"  />
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <h:outputLabel for="uf" value="* #{msg['municipio.uf']}:" />
+                        <h:selectOneMenu id="uf" value="#{municipioMB.entity.uf}" converter="entityConverter" styleClass="form-control" >
+                            <f:selectItem itemLabel="#{xmsg['select']}" />
+                            <f:selectItems value="#{findAllBean.get(classMB.uf)}" 
+                                           var="uf"
+                                           itemLabel="#{uf.sigla}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <h:outputLabel for="latitude" value="#{msg['municipio.latitude']}:" />
+                        <x:inputNumber id="latitude" value="#{municipioMB.entity.latitude}" allowNegative="true" centsLimit="10"  styleClass="form-control"  />
+                    </div>
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <h:outputLabel for="longitude" value="#{msg['municipio.longitude']}:" />
+                        <x:inputNumber id="longitude" value="#{municipioMB.entity.longitude}" allowNegative="true" centsLimit="10" styleClass="form-control"  />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="checkbox">
+                            <label>
+                                <h:selectBooleanCheckbox id="capital" value="#{municipioMB.entity.capital}" />
+                                #{msg['municipio.capital']}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p:fieldset>
+        <h:outputText value="#{xmsg['requiredFieldsForm']}"/>
+        <div class="uix-center">
+            <x:securityArea rolesAllowed="municipio.create">
+                <p:commandButton process="@form" update="@form" action="#{municipioMB.save}" value="#{xmsg['save']}" />
+            </x:securityArea>
+            <x:securityArea rolesAllowed="municipio.audit">
+                <x:audit for="#{municipioMB.entity}"/>
+            </x:securityArea>
+        </div>
+    </h:form>
+
+</ui:composition>

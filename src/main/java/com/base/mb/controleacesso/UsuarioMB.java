@@ -16,15 +16,15 @@ import com.xpert.faces.utils.FacesMessageUtils;
 import com.xpert.i18n.I18N;
 import com.xpert.persistence.query.Restriction;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import org.primefaces.model.menu.MenuModel;
 
 /**
  *
  * @author Ayslan
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class UsuarioMB extends AbstractBaseBean<Usuario> implements Serializable {
 

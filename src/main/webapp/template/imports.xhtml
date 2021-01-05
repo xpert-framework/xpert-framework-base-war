@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <!-- METAS AND TITLE -->
-     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta http-equiv="content-type" content="text/html" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta charset="utf-8"/>
@@ -17,6 +17,7 @@
     <link rel="stylesheet" media="screen" href="#{request.contextPath}/css/normalize.css"/>
     <link rel="stylesheet" media="screen" href="#{request.contextPath}/css/bootstrap.min.css"/>
     <link rel="stylesheet" media="screen" href="#{request.contextPath}/css/default.css"/>
+    <link rel="stylesheet" media="screen" href="#{request.contextPath}/css/dashboard.css"/>
     <script src="#{request.contextPath}/js/bootstrap.min.js"></script>
     <o:conditionalComment if="lt IE 9">
         <script src="#{request.contextPath}/js/html5.js"></script>
@@ -24,7 +25,10 @@
     </o:conditionalComment> 
     <script src="#{request.contextPath}/js/calendar.js"></script>
     <script src="#{request.contextPath}/js/scripts.js"></script>
+  
     <h:outputStylesheet library="xpert" name="css/style.css" />
+    <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+    <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
     <!-- END CSS -->            
 
     <!-- FAVICON -->        

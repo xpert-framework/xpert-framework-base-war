@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:overlayPanel id="overlayFavoritos" styleClass="favoritos-overlay"  for="favoritosButton" appendTo="@(body)"  >
+        <h:panelGroup layout="block" id="panelFavoritos">
+            <h:form id="formFavoritos">
+                <p:dataTable  value="#{sessaoFavoritosMB.favoritos}" var="permissao" emptyMessage="#{msg['favorito.nenhumEncontrado']}"
+                              paginator="true" rows="10" paginatorPosition="bottom" sortBy="#{permissao.caminhoPermissao}"
+                              >
+                    <p:column filterBy="#{permissao.caminhoPermissao}" style="text-align: left;" filterMatchMode="contains" headerText="#{msg['favoritos']}" >
+                        <h:link outcome="#{permissao.urlMenuVerificado}" styleClass="link-permissao" >
+                            <h:outputText value="#{permissao.caminhoPermissao}" styleClass="caminho-permissao" escape="false"/>
+                            <span class="nome-permissao">
+                                <i title="#{permissao.icone}" class="#{permissao.icone}"></i> 
+                                <h:outputText value=" #{permissao.nomeMenuVerificado}"/>
+                            </span>
+                        </h:link>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="#{icons.delete}"  action="#{sessaoFavoritosMB.removerFavoritoSelecionado(permissao)}"
+                                         title="#{msg['favorito.remover']}" process="@this" update="@form :formAdicionarFavorito">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </h:panelGroup>
+    </p:overlayPanel>
+
+    <h:form id="formAdicionarFavorito" styleClass="pull-right">
+        <h:panelGroup rendered="#{sessaoFavoritosMB.paginaPossuiPermissao()}">
+            <p:commandLink action="#{sessaoFavoritosMB.adicionarFavorito}"  style="font-size: 16px;" rendered="#{!sessaoFavoritosMB.favorito}" title="#{msg['favorito.adicionar']}" process="@this" update="@form :panelFavoritos">
+                <i class="far fa-star"></i>
+            </p:commandLink>
+            <p:commandLink action="#{sessaoFavoritosMB.removerFavorito}"  style="font-size: 16px" rendered="#{sessaoFavoritosMB.favorito}" title="#{msg['favorito.remover']}" process="@this" update="@form :panelFavoritos">
+                <i class="fas fa-star"></i>
+            </p:commandLink>
+        </h:panelGroup>
+    </h:form>
+
+</ui:composition>

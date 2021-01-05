@@ -5,7 +5,8 @@ import com.base.modelo.controleacesso.TipoRecuperacaoSenha;
 import com.xpert.core.exception.BusinessException;
 import com.xpert.faces.utils.FacesMessageUtils;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,7 +14,8 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author ayslan
  */
-@ManagedBean
+@Named
+@RequestScoped
 public class RecuperacaoSenhaMB {
     
     @Email(message = "business.emailInvalido")

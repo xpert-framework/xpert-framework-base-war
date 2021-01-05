@@ -8,10 +8,10 @@
     <p:toolbar>
         <p:toolbarGroup align="left">  
             <x:securityArea rolesAllowed="modeloEmail.list">
-                <p:button icon="ui-icon-search" value="#{xmsg['list']}" outcome="listModeloEmail" />
+                <p:button icon="#{icons.search}" value="#{xmsg['list']}" outcome="listModeloEmail" />
             </x:securityArea>
             <x:securityArea rolesAllowed="modeloEmail.create">
-                <p:button icon="ui-icon-plus" value="#{xmsg['create']}" outcome="createModeloEmail" />
+                <p:button icon="#{icons.create}" value="#{xmsg['create']}" outcome="createModeloEmail" />
             </x:securityArea>
         </p:toolbarGroup>
     </p:toolbar>

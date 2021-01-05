@@ -4,7 +4,6 @@
                  xmlns:ui="http://java.sun.com/jsf/facelets"
                  xmlns:p="http://primefaces.org/ui"
                  xmlns:x="http://xpert.com/faces"
-                 xmlns:custom="http://java.sun.com/jsf/composite/components"
                  >
     <h:form id="formDetailUsuario" styleClass="uix-form-detail">
 
@@ -55,6 +54,20 @@
                                 <h:outputText value="#{usuarioMB.entity.senhaCadastrada}" converter ="yesNoConverter" />
                             </span>
                         </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <h:outputLabel value="#{msg['usuario.dataUltimoAcesso']}:" styleClass="control-label"/><br/>
+                            <span class="uix-content-detail">
+                                <h:outputText value="#{usuarioMB.entity.dataUltimoAcesso}" >
+                                    <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+                                </h:outputText>
+                            </span>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <h:outputLabel value="#{msg['usuario.tema']}:" styleClass="control-label" /><br/>
+                            <span class="uix-content-detail">
+                                <h:outputText value="#{usuarioMB.entity.tema}"/>
+                            </span>
+                        </div>
                         <h:panelGroup rendered="#{sessaoUsuarioMB.user.superUsuario}" >
                             <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                                 <h:outputLabel value="#{msg['usuario.superUsuario']}:" styleClass="control-label"/><br/>
@@ -80,7 +93,7 @@
                     <p:column styleClass="uix-datatable-actions" exportable="false">
                         <p:commandButton oncomplete="PF('widgetPerfilDetail').show();"  
                                          action="#{perfilMB.detail}"
-                                         icon="ui-icon-zoomin" process="@form" update=":formDetailPerfil" >
+                                         icon="#{icons.detail}" process="@form" update=":formDetailPerfil" >
                             <f:setPropertyActionListener value="#{perfil}" target="#{perfilMB.entity}" />
                         </p:commandButton>
                     </p:column>
@@ -128,48 +141,12 @@
 
             <p:tab title="#{msg['ultimosAcessos']}">
 
-                <x:dataTableActions target=":formDetailUsuario:tabViewUsuario:dataTableAcessoSistema" 
-                                    widgetVar="dataTableAcessoSistemaWidget" fileName="Acessos - #{usuarioMB.entity.nome}" />
+                <ui:include src="ultimosAcessosUsuario.xhtml"/>
 
-                <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,20,30" paginatorPosition="bottom" emptyMessage="#{xmsg['noRecordFound']}"
-                             var="acessoSistema" rowIndexVar="index" id="dataTableAcessoSistema"
-                             widgetVar="dataTableAcessoSistemaWidget"
-                             currentPageReportTemplate="#{usuarioMB.ultimosAcessos.currentPageReportTemplate}"
-                             paginatorTemplate="#{usuarioMB.ultimosAcessos.paginatorTemplate}"
-                             value="#{usuarioMB.ultimosAcessos}" lazy="true" >
-                    <p:column style="text-align: center;">
-                        <h:outputText value="#{index+1}"/>
-                    </p:column>
-                    <p:column headerText="#{msg['acessoSistema.dataHora']}" sortBy="#{acessoSistema.dataHora}"
-                              style="text-align: center;" filterBy="#{acessoSistema.dataHora}">
-                        <f:facet name="header">
-                            #{msg['acessoSistema.dataHora']}
-                            <x:dateFilter/>
-                        </f:facet>
-                        <h:outputText value="#{acessoSistema.dataHora}">
-                            <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="#{msg['acessoSistema.ip']}" sortBy="#{acessoSistema.ip}"
-                              filterBy="#{acessoSistema.ip}"
-                              >
-                        <f:facet name="header">
-                            <h:outputText value="#{msg['acessoSistema.ip']}"/>
-                        </f:facet>
-                        <h:outputText value="#{acessoSistema.ip}"/>
-                    </p:column>
-                    <p:column headerText="#{msg['acessoSistema.userAgent']}" sortBy="#{acessoSistema.userAgent}"
-                              filterBy="#{acessoSistema.userAgent}"
-                              >
-                        <f:facet name="header">
-                            <h:outputText value="#{msg['acessoSistema.userAgent']}"/>
-                        </f:facet>
-                        <h:outputText value="#{acessoSistema.userAgent}"/>
-                    </p:column>
-                </p:dataTable>
             </p:tab>
 
         </p:tabView>
+
         <div class="uix-center">
             <p:commandButton type="button" value="#{xmsg['close']}" onclick="PF('widgetUsuarioDetail').hide()" />
             <x:securityArea rolesAllowed="usuario.audit">

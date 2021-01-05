@@ -1,0 +1,14 @@
+.dashboard{ }
+.dashboard h3{ color: #007ad9; font-size: 1.8em;}
+.dashboard .ui-datatable {width: 100%; }
+.dashboard .card .card-icon{ font-size: 3.0em; float: right;opacity: 0.2;}
+.dashboard .card .ui-tabs-nav { }
+.dashboard .card .ui-tabs .ui-tabs-nav {text-align: right; width: 8% !important;}
+.dashboard .card .ui-tabs .ui-tabs-nav li{text-align: center;}
+.dashboard .card .ui-tabs-panels  {border-bottom: 0; border-left: 0; border-top: 0; border-right: 0; width: 92% !important;}
+.dashboard .card .ui-tabs-nav .fas{font-size: 1.2em;}
+.dashboard .card .card-value, .dashboard .card .ui-widget.card-value{font-size: 2.4em; font-weight: bold; }
+.dashboard .card .card-value-detail{font-size: 2.0em; font-weight: bold; opacity: 0.6;}
+.dashboard .ui-panel-content{ border-radius: .35rem;box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);}
+.dashboard .card-exporter{margin-bottom: 5px}
+.dashboard .card-exporter a.ui-widget{font-size: 17px;}

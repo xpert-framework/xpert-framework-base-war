@@ -6,19 +6,21 @@ import com.xpert.core.exception.BusinessException;
 import com.xpert.faces.utils.FacesMessageUtils;
 import com.xpert.faces.utils.FacesUtils;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
  * @author Ayslan
  */
-@ManagedBean
+@Named
+@RequestScoped
 public class AlterPasswordMB {
 
     @EJB
     private AlterPasswordBO alterPasswordBO;
-    @ManagedProperty(value = "#{sessaoUsuarioMB}")
+    @Inject
     private SessaoUsuarioMB sessaoUsuarioMB;
     private String currentPassword;
     private String password;

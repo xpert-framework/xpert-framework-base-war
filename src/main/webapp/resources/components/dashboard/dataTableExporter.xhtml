@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="fileName" />
+        <cc:attribute name="target" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <div class="text-center card-exporter" >
+
+            <p:commandLink immediate="true" ajax="false" title="#{msg['exportarTabelaExcel']}">
+                <span class="fa-stack" style="vertical-align: top;">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="#{icons.excel} fa-stack-1x fa-inverse"></i>
+                </span>
+                <pe:exporter type="xlsx" fileName="#{cc.attrs.fileName}_#{of:formatDate(now, 'dd-MM-yyyy_HH-mm-ss')}"
+                             target="#{cc.attrs.target}" />
+            </p:commandLink>
+            <p:commandLink immediate="true" ajax="false" title="#{msg['exportarTabelaPdf']}">
+                <span class="fa-stack" style="vertical-align: top;">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="#{icons.pdf} fa-stack-1x fa-inverse"></i>
+                </span>
+                <pe:exporter orientation="Landscape" type="pdf" fileName="#{cc.attrs.fileName}_#{of:formatDate(now, 'dd-MM-yyyy_HH-mm-ss')}"
+                             target="#{cc.attrs.target}" />
+            </p:commandLink>
+            <p:commandLink immediate="true" ajax="false" title="#{msg['exportarTabelaCsv']}">
+                <span class="fa-stack" style="vertical-align: top;">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="#{icons.csv} fa-stack-1x fa-inverse"></i>
+                </span>
+                <p:dataExporter type="csv" fileName="#{cc.attrs.fileName}_#{of:formatDate(now, 'dd-MM-yyyy_HH-mm-ss')}"
+                                target="#{cc.attrs.target}"/>
+            </p:commandLink>
+        </div>
+
+    </cc:implementation>
+</html>

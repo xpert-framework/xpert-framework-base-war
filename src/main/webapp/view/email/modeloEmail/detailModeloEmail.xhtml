@@ -6,7 +6,7 @@
                  xmlns:x="http://xpert.com/faces"
                  >
     <h:form id="formDetailModeloEmail" styleClass="uix-form-detail">
-        <p:fieldset legend="#{msg['dadosGerais']}">
+        <p:panel header="#{msg['dadosGerais']}">
             <div class="container-fluid">
                 <div class="row">
 
@@ -30,12 +30,12 @@
                     </div>
                 </div>
             </div>
-        </p:fieldset>
-        <p:fieldset legend="#{msg['modeloEmail.layout']}">
+        </p:panel>
+        <p:panel header="#{msg['modeloEmail.layout']}">
 
             <h:outputText value="#{modeloEmailMB.entity.layout}" escape="false"/>
 
-        </p:fieldset>
+        </p:panel>
         <div class="text-center">
             <p:commandButton type="button" value="#{xmsg['close']}" onclick="PF('widgetModeloEmailDetail').hide()" />
             <x:securityArea rolesAllowed="modeloEmail.audit">

@@ -5,7 +5,6 @@
                  xmlns:p="http://primefaces.org/ui"
                  template="/template/mainTemplate.xhtml"
                  xmlns:x="http://xpert.com/faces"
-                 xmlns:custom="http://java.sun.com/jsf/composite/components"
                  >
     <ui:param name="title" value="#{msg['acessoSistema.list']}" />
     <ui:define name="body">
@@ -22,14 +21,23 @@
                          paginatorTemplate="#{acessoSistemaMB.dataModel.paginatorTemplate}"
                          value="#{acessoSistemaMB.dataModel}" lazy="true" >
                 <p:column styleClass="uix-datatable-index">
+                    <f:facet name="header">-</f:facet>
                     <h:outputText value="#{index+1}"/>
                 </p:column>
                 <p:column sortBy="#{acessoSistema.dataHora}"
                           filterBy="#{acessoSistema.dataHora}"
-                          style="text-align: center;">
+                          style="text-align: center;" exportable="false">
                     <f:facet name="header">
                         #{msg['acessoSistema.dataHora']}
                         <x:dateFilter/>
+                    </f:facet>
+                    <h:outputText value="#{acessoSistema.dataHora}">
+                        <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="text-align: center; display: none;">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['acessoSistema.dataHora']}"/>
                     </f:facet>
                     <h:outputText value="#{acessoSistema.dataHora}">
                         <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
@@ -63,11 +71,11 @@
                     <f:facet name="header">
                         <h:outputText value="#{xmsg['actions']}"/>
                     </f:facet>
-                    <p:commandButton oncomplete="PF('widgetAcessoSistemaDetail').show();"  icon="ui-icon-zoomin" process="@form" update=":formDetailAcessoSistema" >
+                    <p:commandButton oncomplete="PF('widgetAcessoSistemaDetail').show();"  icon="#{icons.detail}" process="@form" update=":formDetailAcessoSistema" >
                         <f:setPropertyActionListener value="#{acessoSistema}" target="#{acessoSistemaMB.entity}" />
                     </p:commandButton>
                     <x:securityArea rolesAllowed="acessoSistema.create">
-                        <p:button icon="ui-icon-pencil" outcome="createAcessoSistema" >
+                        <p:button icon="#{icons.edit}" outcome="createAcessoSistema" >
                             <f:param name="id" value="#{acessoSistema.id}" />
                         </p:button>
                     </x:securityArea>

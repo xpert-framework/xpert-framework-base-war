@@ -2,6 +2,7 @@ package com.base.handle;
 
 import com.base.util.SessaoUtils;
 import com.base.bo.configuracao.ErroSistemaBO;
+import com.base.constante.Constantes;
 import com.base.modelo.configuracao.ErroSistema;
 import com.xpert.faces.utils.FacesMessageUtils;
 import com.xpert.faces.utils.FacesUtils;
@@ -12,15 +13,17 @@ import javax.faces.FacesException;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
+import org.jsoup.Jsoup;
 
 /**
- * ExceptionHandler que trata os erros da aplicacao, caso seja um ViewExpiredException o usuario deve ser
- * redirecionado para a pagina inicial caso seja outra excecao essa deve ser registrada usando a classe ErroSistema
- * 
+ * ExceptionHandler que trata os erros da aplicacao, caso seja um
+ * ViewExpiredException o usuario deve ser redirecionado para a pagina inicial
+ * caso seja outra excecao essa deve ser registrada usando a classe ErroSistema
+ *
  * @see ErroSistema
  * @author ayslan
  */
@@ -50,21 +53,23 @@ public class ApplicationExceptionHandler extends ExceptionHandlerWrapper {
 
         while (i.hasNext()) {
 
-            Throwable throwable = i.next().getContext().getException();
+            ExceptionQueuedEvent exceptionQueuedEvent = i.next();
+            
+            Throwable throwable = exceptionQueuedEvent.getContext().getException();
             logger.log(Level.SEVERE, "", throwable);
-            pilhaErro = ErroSistemaBO.getStackTrace(throwable);
 
-            //here you do what ever you want with exception
+            pilhaErro = ErroSistemaBO.getStackTrace(throwable);
             try {
+                //if view expired then redirect to index
                 if (throwable instanceof ViewExpiredException) {
                     FacesUtils.redirect(INDEX);
                 } else {
-                    salvarErro(throwable);
+                    salvarErro(throwable, exceptionQueuedEvent.getContext().getContext());
                 }
             } catch (Throwable ex) {
                 //caso aconteça alguma exceção ao salva o erro, exibir o erro no log e mostrar na tela
                 logger.log(Level.SEVERE, "Erro ao registrar exceção lançada", ex);
-                FacesUtils.addToSession("erroSistema", pilhaErro);
+                FacesUtils.addToSession("erroSistema", Jsoup.clean(pilhaErro, Constantes.WHITE_LIST_HTML));
                 FacesUtils.redirect(ERRO);
             } finally {
                 //sempre remover a execeção
@@ -76,12 +81,19 @@ public class ApplicationExceptionHandler extends ExceptionHandlerWrapper {
 
     }
 
-    public void salvarErro(Throwable throwable) throws NamingException {
+    /**
+     * Este metodo salva o erro erro. A classe ErroSistemaBO deve ser pega via
+     * lookup pois nao existe injecao de dependencia nesse contexto
+     *
+     * @param throwable
+     * @param context
+     * @throws NamingException
+     */
+    public void salvarErro(Throwable throwable, FacesContext context) throws NamingException {
         //lookup do EJB
         InitialContext ctx = new InitialContext();
         erroSistemaBO = (ErroSistemaBO) ctx.lookup("java:comp/env/ejb/ErroSistemaBO");
-        HttpServletRequest request = FacesUtils.getRequest();
-        ErroSistema erroSistema = erroSistemaBO.save(SessaoUtils.getUser(), pilhaErro, request.getServletPath());
+        ErroSistema erroSistema = erroSistemaBO.save(SessaoUtils.getUser(), pilhaErro, context);
         FacesMessageUtils.fatal("erroInesperadoComProtocolo", erroSistema.getId().toString());
         logger.info("Erro salvo no ApplicationExceptionHandler");
     }

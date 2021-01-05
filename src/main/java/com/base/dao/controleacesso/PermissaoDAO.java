@@ -69,4 +69,13 @@ public interface PermissaoDAO extends BaseDAO<Permissao> {
      * @return
      */
     public List<Permissao> getPermissoes(Usuario usuario, boolean apenasAtivas);
+
+    /**
+     * Retorna as permissoes favoritas do usuario
+     *
+     * @param usuario
+     * @return
+     */
+    public List<Permissao> getPermissoesFavoritas(Usuario usuario);
+
 }

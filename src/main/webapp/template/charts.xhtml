@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <!-- 
+    Plugin para exibir os valores nos graficos https://chartjs-plugin-datalabels.netlify.app/
+    (ao adicionar esse script em uma pagina que nao tem Chart acontee erro de javascript
+    -->
+    <script src="#{request.contextPath}/js/chartjs-plugin-datalabels.min.js"></script>
+
+    <script>
+
+        //por padarao nao registrar o plugin de exibir os valores
+        unregisterChartDataLabel();
+
+        function unregisterChartDataLabel() {
+            Chart.plugins.unregister(ChartDataLabels);
+        }
+
+        function regristerChartDataLabel() {
+            Chart.plugins.register(ChartDataLabels);
+
+            //configuracao global para formatar os numeros no grafico
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.global.plugins = {
+                    datalabels: {
+                        formatter: function (value, context) {
+                            if (!isNaN(value)) {
+                                if (value > 999) {
+                                    return (Math.sign(value) * ((Math.abs(value) / 1000).toFixed(1))).toLocaleString() + 'k';
+                                } else {
+                                    return value.toLocaleString();
+                                }
+                            }
+                            return value;
+                        }
+                    }
+                };
+            }
+        }
+
+        $('.dashboard .card .ui-tabs-nav li:has(.fa-chart-pie)').attr('title', 'Visualizar Gráfico');
+        $('.dashboard .card .ui-tabs-nav li:has(.fa-border-all)').attr('title', 'Visualizar Tabela');
+
+    </script>
+
+</ui:composition>

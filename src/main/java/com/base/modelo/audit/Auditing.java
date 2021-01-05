@@ -2,6 +2,8 @@ package com.base.modelo.audit;
 
 import com.base.modelo.controleacesso.Usuario;
 import com.xpert.audit.model.AbstractAuditing;
+import com.xpert.i18n.I18N;
+import com.xpert.utils.StringUtils;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -23,6 +25,22 @@ public class Auditing extends AbstractAuditing implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "auditing")
     private List<Metadata> metadatas;
+
+    public String getIcon() {
+        switch (getAuditingType()) {
+            case INSERT:
+                return "fas fa-save";
+            case UPDATE:
+                return "fas fa-edit";
+            case DELETE:
+                return "fa fa-trash";
+        }
+        return null;
+    }
+
+    public String getEntityName() {
+        return I18N.get(StringUtils.getLowerFirstLetter(getEntity()));
+    }
 
     public Usuario getUsuario() {
         return usuario;

@@ -1,0 +1,92 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces"
+                 xmlns:of="http://omnifaces.org/functions">
+    <ui:param name="title" value="#{msg['municipio.importar']}" />
+    <ui:define name="body">
+        <ui:include src="menuMunicipio.xhtml" />
+        <h:form id="formImportMunicipio" >
+
+            <p:panel header="#{xmsg['generalData']}">
+
+                <x:modalMessages/>
+
+
+                <label>1 - O Arquivo CSV deve seguir o formato abaixo:</label>
+                <br/>
+                <br/>
+                <table class="ui-datatable">
+                    <thead>
+                        <tr>
+
+                            <th>codigo_ibge</th>
+                            <th>nome</th>
+                            <th>latitude</th>
+                            <th>longitude</th>
+                            <th>capital</th>
+                            <th>codigo_uf</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Código no IBGE</td>
+                            <td>Nome do Município</td>
+                            <td>Latitude (decimal separado por .)</td>
+                            <td>Longitude (decimal separado por .)</td>
+                            <td>Capital, 1 - Sim, 0 - Não</td>
+                            <td>Código IBGE da UF</td>
+                        </tr>
+                    </tbody>
+                </table>
+                * Separado por "," (vírgula) e com a linha de cabeçalho
+
+
+                <br/>
+                <br/>
+                <label>2 - Exemplo:</label>
+                <pre>
+<b>codigo_ibge,nome,latitude,longitude,capital,codigo_uf</b>
+5200050,Abadia de Goiás,-16.7573,-49.4412,0,52
+3100104,Abadia dos Dourados,-18.4831,-47.3916,0,31
+5200100,Abadiânia,-16.197,-48.7057,0,52</pre>
+
+                <label>3 - Upload do Arquivo:</label>
+
+                <p:fileUpload  fileUploadListener="#{municipioImportacaoMB.upload}" 
+                               mode="advanced" 
+                               dragDropSupport="false"
+                               invalidFileMessage="#{msg['formatoInvalidoApenasCsv']}"
+                               update="@form" 
+                               invalidSizeMessage="#{msg['arquivoMuitoGrande']}"
+                               uploadLabel="#{msg['enviar']}"
+                               cancelLabel="#{msg['cancelar']}"
+                               label="#{msg['selecionar']}"
+                               sizeLimit="10000000" 
+                               auto="true"
+                               fileLimit="1" allowTypes="/(\.|\/)(csv)$/" >
+
+
+                </p:fileUpload>
+
+                <h:panelGroup rendered="#{not empty municipioImportacaoMB.uploadedFile}">
+                    <label><i class="fas fa-file"></i>  Arquivo Anexado: </label>
+                    <h:outputText value=" #{municipioImportacaoMB.uploadedFile.fileName}"/> - <h:outputText value="#{of:formatBytes(municipioImportacaoMB.uploadedFile.size)}"/>
+                </h:panelGroup>
+
+                <br/>
+
+                <div class="text-center">
+                    <p:commandButton icon="fas fa-upload" process="@form" update="@form"
+                                     value="#{msg['importar']}" 
+                                     action="#{municipioImportacaoMB.importar()}"/>
+                </div>
+
+            </p:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

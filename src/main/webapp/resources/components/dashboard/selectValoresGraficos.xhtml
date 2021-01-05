@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="update" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Exibir valores nos Gráficos" for="exibirValores" />
+            <p:toggleSwitch value="#{viewScope.exibirValores}" id="exibirValores" >
+                <p:ajax onstart="#{viewScope.exibirValores eq true ? 'unregisterChartDataLabel()' : 'regristerChartDataLabel()'}"  process="@this" update="@this #{cc.attrs.update}" rendered="#{empty viewScope.exibirValores or viewScope.exibirValores eq false}"/>
+            </p:toggleSwitch>
+        </h:panelGrid>
+
+    </cc:implementation>
+</html>

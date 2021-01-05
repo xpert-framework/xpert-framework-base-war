@@ -1,0 +1,133 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces">
+    <ui:param name="title" value="#{msg['municipio.list']}" />
+    <ui:define name="body">
+        <ui:include src="menuMunicipio.xhtml" />
+        <h:form id="formListMunicipio">
+            <x:modalMessages/>
+
+            <x:dataTableActions fileName="municipio_export" target=":formListMunicipio:dataTableMunicipio"
+                                widgetVar="dataTableMunicipioWidget"  />
+
+            <p:dataTable paginator="true" rows="10" rowsPerPageTemplate="10,20,30" paginatorPosition="bottom" emptyMessage="#{xmsg['noRecordFound']}"
+                         var="municipio" rowIndexVar="index" id="dataTableMunicipio" widgetVar="dataTableMunicipioWidget" styleClass="table-responsive"
+                         currentPageReportTemplate="#{municipioMB.dataModel.currentPageReportTemplate}"
+                         paginatorTemplate="#{municipioMB.dataModel.paginatorTemplate}"
+                         value="#{municipioMB.dataModel}" lazy="true" >
+                <p:column styleClass="uix-datatable-index">
+                    <f:facet name="header">-</f:facet>
+                    <h:outputText value="#{index+1}"/>
+                </p:column>
+                <p:column headerText="#{msg['municipio.codigoIbge']}" sortBy="#{municipio.codigoIbge}"
+                          filterBy="#{municipio.codigoIbge}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['municipio.codigoIbge']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.codigoIbge}"/>
+                </p:column>
+                <p:column headerText="#{msg['municipio.nome']}" sortBy="#{municipio.nome}"
+                          filterBy="#{municipio.nome}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['municipio.nome']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.nome}"/>
+                </p:column>
+                <p:column headerText="#{msg['municipio.capital']}" sortBy="#{municipio.capital}"
+                          filterBy="#{municipio.capital}" filterOptions="#{booleanSelectItensEmptyOption}"  style="text-align: center;">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['municipio.capital']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.capital}" converter ="yesNoConverter" />
+                </p:column>
+                <p:column headerText="#{msg['municipio.uf']}" sortBy="#{municipio.uf}"
+                          filterBy="#{municipio.uf.id}"  >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['municipio.uf']}" />
+                    </f:facet>
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu label="UF" onchange="PF('dataTableMunicipioWidget').filter()" scrollHeight="150" styleClass="custom-filter"
+                                              filter="true" filterMatchMode="contains">
+                             <f:converter converterId="javax.faces.Long" />
+                            <f:selectItems value="#{findAllBean.getSelect(classMB.uf, false)}" />
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                    <h:outputText value="#{municipio.uf}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.codigoIbge']}" sortBy="#{municipio.uf.codigoIbge}"
+                          filterBy="#{municipio.uf.codigoIbge}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.codigoIbge']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.uf.codigoIbge}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.nomeRegiao']}" sortBy="#{municipio.uf.nomeRegiao}"
+                          filterBy="#{municipio.uf.nomeRegiao}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.nomeRegiao']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.uf.nomeRegiao}"/>
+                </p:column>
+                <p:column headerText="#{msg['uf.codigoIbgeRegiao']}" sortBy="#{municipio.uf.codigoIbgeRegiao}"
+                          filterBy="#{municipio.uf.codigoIbgeRegiao}"   >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['uf.codigoIbgeRegiao']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.uf.codigoIbgeRegiao}"/>
+                </p:column>
+                <p:column headerText="#{msg['municipio.latitude']}" sortBy="#{municipio.latitude}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['municipio.latitude']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.latitude}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['municipio.longitude']}" sortBy="#{municipio.longitude}" >
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['municipio.longitude']}" />
+                    </f:facet>
+                    <h:outputText value="#{municipio.longitude}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="uix-datatable-actions" exportable="false" headerText="#{xmsg['actions']}">
+                    <f:facet name="header">
+                        <h:outputText value="#{xmsg['actions']}"/>
+                    </f:facet>
+                    <p:commandButton oncomplete="PF('widgetMunicipioDetail').show();"  icon="#{icons.detail}" 
+                                     process="@form" update=":formDetailMunicipio" title="#{xmsg['detail']}" >
+                        <f:setPropertyActionListener value="#{municipio}" target="#{municipioMB.entity}" />
+                    </p:commandButton>
+                    <x:securityArea rolesAllowed="municipio.create">
+                        <p:button icon="#{icons.edit}" outcome="createMunicipio" title="#{xmsg['edit']}">
+                            <f:param name="id" value="#{municipio.id}" />
+                        </p:button>
+                    </x:securityArea>
+                    <x:securityArea rolesAllowed="municipio.delete">
+                        <p:commandButton icon="#{icons.delete}" title="#{xmsg['delete']}" process="@form" update="@form" 
+                                         action="#{municipioMB.delete}" >
+                            <f:setPropertyActionListener value="#{municipio.id}" target="#{municipioMB.id}" />
+                            <x:confirmation message="#{xmsg['confirmDelete']} - #{municipio}" />
+                        </p:commandButton>
+                    </x:securityArea>
+                </p:column>
+            </p:dataTable>
+            <div class="uix-audit-delete">
+                <x:securityArea rolesAllowed="municipio.audit">
+                    <x:auditDelete for="#{municipioMB.entityClass}"/>
+                </x:securityArea>
+            </div>  
+        </h:form>
+
+        <p:dialog widgetVar="widgetMunicipioDetail" header="#{msg['municipio.detail']}" appendTo="@(body)" 
+                  modal="true" styleClass="uix-dialog-fluid" >
+            <ui:include src="detailMunicipio.xhtml" />
+        </p:dialog>
+    </ui:define>
+</ui:composition>

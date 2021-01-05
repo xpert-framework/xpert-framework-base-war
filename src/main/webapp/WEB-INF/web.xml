@@ -25,7 +25,10 @@
     
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>bootstrap</param-value>
+        <param-value>#{userThemeMB.theme}</param-value>
+        <!--<param-value>nova-dark</param-value>-->
+        <!--<param-value>nova-light</param-value>-->
+        <!--<param-value>nova-colored</param-value>-->
     </context-param>
 
     <persistence-context-ref>

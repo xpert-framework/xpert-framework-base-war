@@ -3,6 +3,7 @@ package com.base.mb.controleacesso;
 import com.base.bo.controleacesso.UsuarioMenuBO;
 import com.base.bo.controleacesso.PermissaoBO;
 import com.base.dao.controleacesso.PermissaoDAO;
+import com.base.mb.tema.UserThemeMB;
 import com.base.modelo.controleacesso.Permissao;
 import com.base.modelo.controleacesso.SolicitacaoRecuperacaoSenha;
 import com.base.modelo.controleacesso.Usuario;
@@ -11,8 +12,9 @@ import com.xpert.security.session.AbstractUserSession;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import org.primefaces.model.menu.MenuModel;
 
 /**
@@ -20,7 +22,7 @@ import org.primefaces.model.menu.MenuModel;
  *
  * @author ayslan
  */
-@ManagedBean
+@Named
 @SessionScoped
 public class SessaoUsuarioMB extends AbstractUserSession implements Serializable {
 
@@ -33,6 +35,10 @@ public class SessaoUsuarioMB extends AbstractUserSession implements Serializable
     private Usuario user;
     private List<Permissao> roles;
     private List<Permissao> atalhos;
+    @Inject
+    private SessaoFavoritosMB sessaoFavoritosMB;
+    @Inject
+    private UserThemeMB userThemeMB;
     private MenuModel menuModel;
     private SolicitacaoRecuperacaoSenha solicitacaoRecuperacaoSenha;
 
@@ -42,6 +48,10 @@ public class SessaoUsuarioMB extends AbstractUserSession implements Serializable
         roles = permissaoBO.getPermissoes(user, true);
         //pegar atalhos do usuario
         atalhos = permissaoDAO.getPermissoesAtalhos(user);
+        //carregar os favoritos
+        sessaoFavoritosMB.carregarFavoritos();
+        //carregar tema
+        userThemeMB.carregarTema();
         //criar o menu
         criarMenu();
         criarCaminhoPermissao();
@@ -49,6 +59,8 @@ public class SessaoUsuarioMB extends AbstractUserSession implements Serializable
         //iniciar lazy
         user.setPerfis(permissaoDAO.getInitialized(user.getPerfis()));
     }
+
+   
 
     public void criarMenu() {
         menuModel = usuarioMenuBO.criarMenu(roles);
@@ -62,6 +74,8 @@ public class SessaoUsuarioMB extends AbstractUserSession implements Serializable
     public List<Permissao> pesquisarPermissao(String query) {
         return permissaoBO.pesquisarPermissao(query, roles);
     }
+    
+   
 
     public MenuModel getMenuModel() {
         return menuModel;
@@ -101,4 +115,23 @@ public class SessaoUsuarioMB extends AbstractUserSession implements Serializable
     public void setSolicitacaoRecuperacaoSenha(SolicitacaoRecuperacaoSenha solicitacaoRecuperacaoSenha) {
         this.solicitacaoRecuperacaoSenha = solicitacaoRecuperacaoSenha;
     }
+
+    public SessaoFavoritosMB getSessaoFavoritosMB() {
+        return sessaoFavoritosMB;
+    }
+
+    public void setSessaoFavoritosMB(SessaoFavoritosMB sessaoFavoritosMB) {
+        this.sessaoFavoritosMB = sessaoFavoritosMB;
+    }
+
+    public UserThemeMB getUserThemeMB() {
+        return userThemeMB;
+    }
+
+    public void setUserThemeMB(UserThemeMB userThemeMB) {
+        this.userThemeMB = userThemeMB;
+    }
+
+    
+    
 }

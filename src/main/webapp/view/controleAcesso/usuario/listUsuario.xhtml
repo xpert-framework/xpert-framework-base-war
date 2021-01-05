@@ -5,7 +5,6 @@
                  xmlns:p="http://primefaces.org/ui"
                  template="/template/mainTemplate.xhtml"
                  xmlns:x="http://xpert.com/faces"
-                 xmlns:custom="http://java.sun.com/jsf/composite/components"
                  >
     <ui:param name="title" value="#{msg['usuario.list']}" />
     <ui:define name="body">
@@ -21,6 +20,7 @@
                          paginatorTemplate="#{usuarioMB.dataModel.paginatorTemplate}"
                          value="#{usuarioMB.dataModel}" lazy="true" >
                 <p:column styleClass="uix-datatable-index">
+                    <f:facet name="header">-</f:facet>
                     <h:outputText value="#{index+1}"/>
                 </p:column>
                 <p:column headerText="#{msg['usuario.nome']}" sortBy="#{usuario.nome}"
@@ -64,6 +64,15 @@
                     </f:facet>
                     <h:outputText value="#{usuario.situacaoUsuario.descricao}" />
                 </p:column>
+                <p:column headerText="#{msg['usuario.senhaCadastrada']}" sortBy="#{usuario.senhaCadastrada}"
+                          filterBy="#{usuario.senhaCadastrada}" 
+                          filterOptions="#{booleanSelectItensEmptyOption}"
+                          styleClass="text-center">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['usuario.senhaCadastrada']}"/>
+                    </f:facet>
+                    <h:outputText value="#{usuario.senhaCadastrada}" converter ="yesNoConverter" />
+                </p:column>
                 <p:column headerText="#{msg['usuario.superUsuario']}" sortBy="#{usuario.superUsuario}"
                           filterBy="#{usuario.superUsuario}" rendered="#{sessaoUsuarioMB.user.superUsuario}"
                           filterOptions="#{booleanSelectItensEmptyOption}"
@@ -73,21 +82,43 @@
                     </f:facet>
                     <h:outputText value="#{usuario.superUsuario}" converter ="yesNoConverter" />
                 </p:column>
+
+                <p:column sortBy="#{usuario.dataUltimoAcesso}"
+                          filterBy="#{usuario.dataUltimoAcesso}"
+                          style="text-align: center;" exportable="false">
+                    <f:facet name="header">
+                        #{msg['usuario.dataUltimoAcesso']}
+                        <x:dateFilter/>
+                    </f:facet>
+                    <h:outputText value="#{usuario.dataUltimoAcesso}">
+                        <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="text-align: center; display: none;">
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['usuario.dataUltimoAcesso']}"/>
+                    </f:facet>
+                    <h:outputText value="#{usuario.dataUltimoAcesso}">
+                        <f:convertDateTime pattern="#{formatMB.format.dataHoraMinutoSegundo}"/>
+                    </h:outputText>
+                </p:column>
+
                 <p:column styleClass="uix-datatable-actions" exportable="false">
                     <f:facet name="header">
                         <h:outputText value="#{xmsg['actions']}"/>
                     </f:facet>
-                    <p:commandButton oncomplete="PF('widgetUsuarioDetail').show();"  icon="ui-icon-zoomin"
+                    <p:commandButton oncomplete="PF('widgetUsuarioDetail').show();"  icon="#{icons.detail}"
                                      action="#{usuarioMB.detail}" process="@form" update=":formDetailUsuario" >
                         <f:setPropertyActionListener value="#{usuario}" target="#{usuarioMB.entity}" />
                     </p:commandButton>
                     <x:securityArea rolesAllowed="usuario.create">
-                        <p:button icon="ui-icon-pencil" outcome="createUsuario" >
+                        <p:button icon="#{icons.edit}" outcome="createUsuario" >
                             <f:param name="id" value="#{usuario.id}" />
                         </p:button>
                     </x:securityArea>
                     <x:securityArea rolesAllowed="usuario.delete">
-                        <p:commandButton icon="ui-icon-trash" process="@form" update="@form" action="#{usuarioMB.delete}" >
+                        <p:commandButton icon="#{icons.delete}" process="@form" update="@form" action="#{usuarioMB.delete}" >
                             <f:setPropertyActionListener value="#{usuario.id}" target="#{usuarioMB.id}" />
                             <x:confirmation message="#{xmsg['confirmDelete']} - #{usuario}" />
                         </p:commandButton>

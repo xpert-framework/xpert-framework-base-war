@@ -4,14 +4,14 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    
+
     <p:ajaxStatus onstart="PF('loadingGif').show();"
                   oncomplete="PF('loadingGif').hide();"/>
 
-    <p:dialog modal="true" widgetVar="loadingGif" closable="false" styleClass="fixed"
+    <p:dialog modal="true" widgetVar="loadingGif" closable="false"
               appendTo="@(body)" width="230" resizable="false" showHeader="false">
         <h:panelGrid columns="2">
-            <h:graphicImage value="/images/ajax-loader.gif"/>
+            <i style="font-size: 30px;" class="fas fa-spinner fa-spin"></i>
             <h:outputText style="font-size: 14px; font-weight: bold;" value="Carregando..." />
         </h:panelGrid>
     </p:dialog>

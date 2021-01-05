@@ -4,26 +4,23 @@
                  xmlns:ui="http://java.sun.com/jsf/facelets"
                  xmlns:p="http://primefaces.org/ui"
                  xmlns:x="http://xpert.com/faces"
-                 xmlns:custom="http://java.sun.com/jsf/composite/components"
                  >
     <h:form>
         <x:modalMessages/>
         <p:tabView>
             <p:tab title="#{msg['dadosGerais']}">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <h:outputLabel value="* #{msg['perfil.descricao']}:" />
-                            <p:inputText value="#{perfilMB.entity.descricao}" maxlength="255"  styleClass="form-control"   />
-                        </div>
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <h:outputLabel value="* #{msg['perfil.descricao']}:" />
+                        <p:inputText value="#{perfilMB.entity.descricao}" maxlength="255"  styleClass="form-control"   />
+                    </div>
 
-                        <div class="form-group col-lg-12 col-md-12 col-sm-6 col-xs-12">
-                            <div class="checkbox">
-                                <label>
-                                    <h:selectBooleanCheckbox value="#{perfilMB.entity.ativo}" />
-                                    #{msg['perfil.ativo']}
-                                </label>
-                            </div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                        <div class="checkbox">
+                            <label>
+                                <h:selectBooleanCheckbox value="#{perfilMB.entity.ativo}" />
+                                #{msg['perfil.ativo']}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -32,9 +29,10 @@
             <p:tab title="#{msg['acessosDoPerfil']}">
                 <p:tree value="#{perfilMB.permissoes}" var="permissao"
                         selectionMode="checkbox" style="max-height: 500px; overflow-y: scroll;"
-                        selection="#{perfilMB.permissoesSelecionadas}">  
+                        selection="#{perfilMB.permissoesSelecionadas}" >  
                     <p:treeNode styleClass="class-check-#{permissao.id}">  
-                        <h:outputText value="#{permissao.descricao}" />  
+                        <i class="#{permissao.icone}"></i>
+                        <h:outputText value=" #{permissao.descricao}" />  
                         <h:panelGroup rendered="#{not sessaoUsuarioMB.hasRole(permissao.key)}">
                             <script>
                                 Xpert.disableTreeNode(".class-check-#{permissao.id}");

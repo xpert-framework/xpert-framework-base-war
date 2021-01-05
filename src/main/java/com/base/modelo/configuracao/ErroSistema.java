@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.Date;
 import javax.persistence.*;
+import org.jsoup.Jsoup;
 
 /**
  *
@@ -54,7 +55,7 @@ public class ErroSistema implements Serializable {
                     }
                 }
                 bufferedReader.close();
-                return stringBuilder.toString();
+                return Jsoup.clean(stringBuilder.toString(), Constantes.WHITE_LIST_HTML);
             } catch (IOException ex) {
                 return pilhaErro;
             }

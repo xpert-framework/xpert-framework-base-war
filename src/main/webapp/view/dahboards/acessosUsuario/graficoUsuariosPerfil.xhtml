@@ -1,0 +1,43 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:dashboard="http://xmlns.jcp.org/jsf/composite/components/dashboard"
+                 xmlns:x="http://xpert.com/faces">
+    <p:tabView orientation="right" id="tabViewUsuariosPerfil">
+        <p:tab>
+            <f:facet name="title">
+                <i class="fas fa-chart-bar"></i>
+            </f:facet>
+            <p:barChart model="#{dashboardAcessoMB.dashboardAcesso.graficoUsuariosPerfil}" style="width: 100%; height: 300px;"/>
+        </p:tab>
+        <p:tab>
+            <f:facet name="title">
+                <i class="fas fa-border-all"></i>
+            </f:facet>
+            <div style="height: 300px;">
+
+                <dashboard:dataTableExporter fileName="Usuarios_Perfil" target=":formDashboardAcessos:tabViewUsuariosPerfil:dataTableUsuariosPerfil" />
+
+                <p:dataTable id="dataTableUsuariosPerfil" value="#{dashboardAcessoMB.dashboardAcesso.usuariosPerfil}" 
+                             scrollable="true" scrollHeight="200" var="usuarioPerfil">
+                    <p:column  sortBy="#{usuarioPerfil[0]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['perfil']}"/>
+                        </f:facet>
+                        <h:outputText value="#{usuarioPerfil[0]}" />
+                    </p:column>
+                    <p:column style="text-align: right" sortBy="#{usuarioPerfil[1]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['quantidade']}"/>
+                        </f:facet>
+                        <h:outputText value="#{usuarioPerfil[1]}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </p:tab>
+    </p:tabView>
+</ui:composition>

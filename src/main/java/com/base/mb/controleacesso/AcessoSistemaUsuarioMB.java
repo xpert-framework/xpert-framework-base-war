@@ -8,17 +8,17 @@ import java.io.Serializable;
 import com.xpert.core.crud.AbstractBaseBean;
 import com.xpert.core.crud.AbstractBusinessObject;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import com.xpert.persistence.query.Restriction;
 import com.xpert.persistence.query.Restrictions;
 import java.util.List;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author ayslan
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class AcessoSistemaUsuarioMB extends AbstractBaseBean<AcessoSistema> implements Serializable {
 

@@ -8,19 +8,19 @@ import java.io.Serializable;
 import com.xpert.core.crud.AbstractBaseBean;
 import com.xpert.core.crud.AbstractBusinessObject;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import com.xpert.core.exception.BusinessException;
 import com.xpert.faces.utils.FacesMessageUtils;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import org.primefaces.model.TreeNode;
 
 /**
  *
  * @author Ayslan
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class PerfilMB extends AbstractBaseBean<Perfil> implements Serializable {
 

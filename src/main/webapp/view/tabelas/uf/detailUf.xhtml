@@ -1,0 +1,52 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:x="http://xpert.com/faces">
+    <h:form id="formDetailUf" styleClass="uix-form-detail">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.codigoIbge']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.codigoIbge}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.nome']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.nome}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.sigla']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.sigla}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.codigoIbgeRegiao']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.codigoIbgeRegiao}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.nomeRegiao']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.nomeRegiao}" styleClass="uix-content-detail"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.latitude']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.latitude}" styleClass="uix-content-detail">
+                        <f:convertNumber />
+                    </h:outputText>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel value="#{msg['uf.longitude']}:" styleClass="control-label" /><br/>
+                    <h:outputText value="#{ufMB.entity.longitude}" styleClass="uix-content-detail">
+                        <f:convertNumber />
+                    </h:outputText>
+                </div>
+            </div>
+        </div>
+        <p:separator/>
+        <div class="uix-center">
+            <p:commandButton type="button" value="#{xmsg['close']}" onclick="PF('widgetUfDetail').hide()" />
+            <x:securityArea rolesAllowed="uf.audit">
+                <x:audit for="#{ufMB.entity}"/>
+            </x:securityArea>
+        </div>
+    </h:form>
+</ui:composition>

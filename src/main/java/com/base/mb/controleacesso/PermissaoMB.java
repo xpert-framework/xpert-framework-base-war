@@ -11,15 +11,15 @@ import com.xpert.persistence.exception.DeleteException;
 import com.xpert.persistence.query.Restriction;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import org.primefaces.model.TreeNode;
 
 /**
  *
  * @author Ayslan
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class PermissaoMB extends AbstractBaseBean<Permissao> implements Serializable {
 

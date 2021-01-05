@@ -20,6 +20,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import org.omnifaces.util.Faces;
 
 /**
  *
@@ -51,25 +53,38 @@ public class ErroSistemaBO extends AbstractBusinessObject<ErroSistema> {
      *
      * @param usuario
      * @param pilhaErro
-     * @param url
+     * @param context
      *
      * @return
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public ErroSistema save(Usuario usuario, String pilhaErro, String url) {
+    public ErroSistema save(Usuario usuario, String pilhaErro, FacesContext context) {
         //salvar o erro
 
         ErroSistema erroSistema = new ErroSistema();
         erroSistema.setPilhaErro(pilhaErro);
         erroSistema.setUsuario(usuario);
         erroSistema.setData(new Date());
-        if (FacesContext.getCurrentInstance() != null) {
+        if (context != null) {
             String browser = FacesUtils.getBrowser();
             erroSistema.setInformacaoNavegador(browser);
         }
 
+        String url = null;
+        String queryString = null;
+        if (context != null) {
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            url = request.getServletPath();
+            queryString = request.getQueryString();
+        }
+
         if (url != null && !url.isEmpty()) {
-            erroSistema.setUrl(url);
+            //formatar a url para pegar os parametros
+            String completeUrl = url;
+            if (queryString != null) {
+                completeUrl = completeUrl + "?" + queryString;
+            }
+            erroSistema.setUrl(completeUrl);
             //pegar possiveis funcionalidades a partir da URL atual
             Restrictions restrictions = new Restrictions();
             restrictions.like("url", url);

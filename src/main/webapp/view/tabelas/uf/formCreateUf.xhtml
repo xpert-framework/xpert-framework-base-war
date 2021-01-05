@@ -1,0 +1,56 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:x="http://xpert.com/faces">
+
+
+    <h:form id="formCreateUf" >
+        <p:fieldset legend="#{xmsg['generalData']}">
+            <x:modalMessages/>
+
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="codigoIbge" value="* #{msg['uf.codigoIbge']}:" />
+                    <p:inputMask id="codigoIbge" mask="9?999999999" slotChar="" value="#{ufMB.entity.codigoIbge}" styleClass="form-control" />
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="nome" value="* #{msg['uf.nome']}:" />
+                    <p:inputText id="nome" value="#{ufMB.entity.nome}" maxlength="200"  styleClass="form-control"  />
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="sigla" value="* #{msg['uf.sigla']}:" />
+                    <p:inputText id="sigla" value="#{ufMB.entity.sigla}" maxlength="2"  styleClass="form-control"  />
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="codigoIbgeRegiao" value="* #{msg['uf.codigoIbgeRegiao']}:" />
+                    <p:inputMask id="codigoIbgeRegiao" mask="9?999999999" slotChar="" value="#{ufMB.entity.codigoIbgeRegiao}" styleClass="form-control" />
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="nomeRegiao" value="* #{msg['uf.nomeRegiao']}:" />
+                    <p:inputText id="nomeRegiao" value="#{ufMB.entity.nomeRegiao}" maxlength="200"  styleClass="form-control"  />
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="latitude" value="#{msg['uf.latitude']}:" />
+                    <x:inputNumber id="latitude" value="#{ufMB.entity.latitude}" allowNegative="true" centsLimit="10"  styleClass="form-control"  />
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <h:outputLabel for="longitude" value="#{msg['uf.longitude']}:" />
+                    <x:inputNumber id="longitude" value="#{ufMB.entity.longitude}" allowNegative="true" centsLimit="10" styleClass="form-control"  />
+                </div>
+
+            </div>
+        </p:fieldset>
+        <h:outputText value="#{xmsg['requiredFieldsForm']}"/>
+        <div class="uix-center">
+            <x:securityArea rolesAllowed="uf.create">
+                <p:commandButton process="@form" update="@form" action="#{ufMB.save}" value="#{xmsg['save']}" />
+            </x:securityArea>
+            <x:securityArea rolesAllowed="uf.audit">
+                <x:audit for="#{ufMB.entity}"/>
+            </x:securityArea>
+        </div>
+    </h:form>
+
+</ui:composition>

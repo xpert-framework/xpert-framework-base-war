@@ -39,19 +39,19 @@ public class PerfilBO extends AbstractBusinessObject<Perfil> {
 
     @Override
     public List<UniqueField> getUniqueFields() {
-        return new UniqueFields().add("descricao");
+        return UniqueFields.from(Perfil.class);
     }
 
     /**
      * metodo para garantir que uma permissao nao seja adicionada sem que o
      * usuario logado possua ela
-     * 
+     *
      * @param perfil
      */
     public void verificarPermissoesPerfil(Perfil perfil) {
         //para o super usuario isso nao e necessario
         if (SessaoUtils.getUser().isSuperUsuario() == false) {
-            
+
             List<Permissao> permissoesUsuarioLogado = permissaoBO.getPermissoes(SessaoUtils.getUser());
             List<Permissao> permissoesBanco = new ArrayList<Permissao>();
             if (perfil.getId() != null) {

@@ -1,0 +1,39 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:dashboard="http://xmlns.jcp.org/jsf/composite/components/dashboard"
+                 xmlns:x="http://xpert.com/faces">
+    <p:tabView orientation="right" id="tabViewEventosTabela">
+        <p:tab>
+            <f:facet name="title">
+                <i class="fas fa-chart-bar"></i>
+            </f:facet>
+            <p:barChart model="#{dashboardAuditoriaMB.dashboardAuditoria.graficoEventosTabela}" style="width: 100%; height: 400px;"/>
+        </p:tab>
+        <p:tab>
+            <f:facet name="title">
+                <i class="fas fa-border-all"></i>
+            </f:facet>
+            <div style="height: 400px;">
+
+                <dashboard:dataTableExporter fileName="Eventos_Tabela" target=":formDashboardAuditoria:tabViewEventosTabela:dataTableEventosTabela" />
+
+                <p:dataTable id="dataTableEventosTabela" value="#{dashboardAuditoriaMB.dashboardAuditoria.eventosTabela}" 
+                             scrollable="true" scrollHeight="300" var="objeto" sortBy="#{objeto[4]}" sortOrder="descending">
+                    <p:column sortBy="#{objeto[0]}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['tabela']}"/>
+                        </f:facet>
+                        <h:outputText value="#{objeto[0]}"  />
+                        <f:facet name="footer">
+                            <h:outputText value="#{msg['total']}" />
+                        </f:facet>
+                    </p:column>
+                   <ui:include src="colunasTabelaEventos.xhtml"/>
+                </p:dataTable>
+            </div>
+        </p:tab>
+    </p:tabView>
+</ui:composition>

@@ -1,0 +1,145 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces"
+                 xmlns:dashboard="http://xmlns.jcp.org/jsf/composite/components/dashboard">
+    <ui:param name="title" value="#{msg['dashboards.acessos']}" />
+    <ui:define name="body">
+
+        <ui:include src="/template/charts.xhtml"/>
+
+        <h:form id="formDashboardAcessos" styleClass="dashboard">
+
+            <p:panel style="padding: .5em" >
+                <h3>#{msg['filtros']}</h3>
+                <div class="ui-fluid">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="* #{msg['dataInicio']}:" />
+                            <p:calendar  value="#{dashboardAcessoMB.dashboardAcesso.dataInicial}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="* #{msg['dataFinal']}:" />
+                            <p:calendar  value="#{dashboardAcessoMB.dashboardAcesso.dataFinal}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['usuarios']}:" />
+                            <p:selectCheckboxMenu  value="#{dashboardAcessoMB.dashboardAcesso.usuarios}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="entityConverter">
+                                <f:selectItems value="#{findAllBean.get(classMB.usuario)}" var="usuario"
+                                               itemValue="#{usuario}" itemLabel="#{usuario.nome}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+
+                    </div>
+                </div>
+                <div  class="pull-left">
+                    <dashboard:selectValoresGraficos update=":formDashboardAcessos:panelResultadoDashboard"/>
+                </div>
+                <div class="pull-right">
+                    <p:commandButton process="@form" update="@form" value="#{msg['filtrar']}" 
+                                     icon="fas fa-search" action="#{dashboardAcessoMB.carregarDashboard}"  />
+
+                </div>
+                <div class="clearfix"></div>
+            </p:panel>
+
+
+            <h:panelGroup layout="block" id="panelResultadoDashboard" styleClass="ui-fluid">
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.usuariosAtivos']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAcessoMB.dashboardAcesso.quantidadeUsuariosAtivos}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <i class="fas fa-user card-icon"></i>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.perfisAtivos']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAcessoMB.dashboardAcesso.quantidadePerfisAtivos}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <i class="fas fa-users card-icon"></i>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.permissoesAtivas']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAcessoMB.dashboardAcesso.quantidadePermissoesAtivas}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <i class="fas fa-user-shield card-icon"></i>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.acessos']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAcessoMB.dashboardAcesso.quantidadeAcessos}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <i class="fas fa-file-signature card-icon"></i>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.acessosDia']}</h3>
+                            <ui:include src="graficoAcessosDia.xhtml"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-lg-6 ui-md-6 ui-sm-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.acessosFaixaHorario']}</h3>
+                            <ui:include src="graficoAcessosFaixaHorario.xhtml"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-lg-6 ui-md-6 ui-sm-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.usuariosSituacao']}</h3>
+                            <ui:include src="graficoUsuariosSituacao.xhtml"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-lg-6 ui-md-6 ui-sm-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.usuariosSenhaCadastrada']}</h3>
+                            <ui:include src="graficoUsuariosSenhaCadastrada.xhtml"/>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-lg-6 ui-md-6 ui-sm-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.usuariosPerfil']}</h3>
+                            <ui:include src="graficoUsuariosPerfil.xhtml"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.acessosUsuario']}</h3>
+                            <ui:include src="graficoAcessosUsuario.xhtml"/>
+                        </p:panel>
+                    </div>
+
+                </div>
+            </h:panelGroup>
+        </h:form>
+
+        <x:modalMessages>
+            <p:autoUpdate/>
+        </x:modalMessages>
+
+
+    </ui:define>
+</ui:composition>

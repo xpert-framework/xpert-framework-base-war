@@ -4,7 +4,8 @@ header{padding: 10px 20px;}
 footer {border-top: 1px solid #ddd;margin: 10px auto 0; padding: 20px; width: 98%;}
 .ui-widget{font-size: 12px;}
 select{padding: 4px;}
-.font-11, .font-11  td, .font-11  th{font-size:  11px;}
+body .ui-widget .font-11,.font-11, .font-11  td, .font-11  th{font-size:  11px;}
+body .ui-widget .font-12,.font-12, .font-12  td, .font-12  th{font-size:  12px;}
 .font-weight-normal, .font-weight-normal  td{font-weight: normal;}
 .grid-detail, grid-form{margin-top: 0;}
 .grid-detail td, grid-form td{padding: 4px 0;}
@@ -50,16 +51,16 @@ select{padding: 4px;}
 .ui-dialog.ui-widget-content .ui-dialog-content {font-size: 12px; margin-bottom: 10px;}
 .ui-fieldset{margin: 3px 0;}
 .ui-fieldset-legend{width: auto;font-size: 13px;height: auto;padding: 0px 15px;margin: 5px 0 5px 5px;}
-.ui-menu .ui-menu-parent .ui-menu-child {min-width: 180px; width: auto;}
 .grid-permissao a{text-decoration: none;}
 .grid-permissao .ui-panel-content{padding: 2px;}
 .grid-permissao .ui-datagrid-content{border: 0;}
 .panel-permissao{margin-bottom: 5px;}
-.link-permissao{vertical-align:middle;display:block;}
+.link-permissao{vertical-align:middle;display:block; color: #000;}
+.link-permissao:hover{text-decoration: none;}
 .caminho-permissao {font-size: 10px;  display: block; line-height: 11px; font-weight: normal; padding-top: 3px;text-align: center; color: #8B8989;}
-.nome-permissao {display: block;font-size: 15px; font-weight: bold; padding-top: 3px; text-align: center; color: #000}
+.nome-permissao {display: block;font-size: 15px; font-weight: bold; padding-top: 3px; text-align: center; }
 .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {float: left; margin-right: 2px; margin-left: 0;}
-input[type="radio"], input[type="checkbox"] {margin: 0; min-height: 0; padding-left: 0; margin-right: 3px;}
+input[type="radio"], input[type="checkbox"] {min-height: 0; padding-left: 0; margin-right: 3px;}
 .radio, .checkbox {padding-left: 0; margin: 0;}
 .radio td, .checkbox td{    padding: 4px;}
 .ui-toolbar{margin: 5px 0 10px 0;}
@@ -70,16 +71,16 @@ input[type="radio"], input[type="checkbox"] {margin: 0; min-height: 0; padding-l
 .navbar .ui-panelmenu .ui-panelmenu-header{font-size: 14px;}
 /*menu bar*/
 .ui-menu.ui-menubar{}
+.ui-menu .ui-menu-parent .ui-menu-child {min-width: 180px; width: auto;}
 .ui-menu .ui-menuitem {margin: 0;}
-.ui-menu.ui-menubar .ui-menu-parent .ui-menu-child {padding: 0;}
-.ui-menu > ul > li > a{padding: 10px 10px !important;border: 0}
 .ui-menu > ul > li ul li{width: 230px !important;}
+/*.ui-menu.ui-menubar .ui-menu-parent .ui-menu-child {padding: 0;}
+.ui-menu > ul > li > a{padding: 10px 10px !important;border: 0}
 .ui-menu > ul > li > ul > li{width: 190px !important;}
-.ui-menu > ul > li ul .ui-menuitem-link {padding: 8px 0 !important; font-size: 13px;}
-.acesso-rapido .ui-autocomplete-input {height: 34px;}
+.ui-menu > ul > li ul .ui-menuitem-link {padding: 8px 0 !important; font-size: 13px;}*/
 select.form-control{height: 34px;}
 section.conteudo {padding: 0 20px; font-size: 12px;}
-section.conteudo .page-header {margin: 10px 0 0 0; font-size: 20px }
+section.conteudo .page-header {margin: 10px 0 10px 0; font-size: 20px }
 section.conteudo h1.page-header  span{vertical-align: middle;}
 .ui-datatable .ui-datatable-tablewrapper tbody > tr > td {padding: 3px; white-space: normal;}
 .ui-datatable thead > tr > th {white-space: normal !important;}
@@ -99,3 +100,23 @@ section.conteudo h1.page-header  span{vertical-align: middle;}
 .ui-datatable table{ table-layout: auto; }
 .ui-datatable tr.ui-widget-content:hover, .ui-panelgrid tr.ui-widget-content:hover, .ui-treetable tr.ui-widget-content:hover{background-color: #EBEBEB;}
 .uix-form-detail .control-label { margin-bottom: 0; margin-top: 8px;}
+
+.ui-tree {
+    min-width: 500px;
+}
+.uix-confirm-dialog{background-color: #fff}
+.ui-overlay-hidden{display: none;}
+/*CSS para a escolha do favorito*/
+.favoritos-overlay .ui-overlaypanel-content{background-color: #fff}
+.favoritos-overlay .ui-datatable .ui-datatable-data>tr {background-color: #fff;}
+.favoritos-overlay .ui-datatable .ui-datatable-data>tr.ui-datatable-even {background-color: #EBEBEB; }
+/*CSS para a escolha do tema*/
+.themes-overlay .ui-overlaypanel-content{background-color: #fff}
+.themes-overlay ul{list-style: none;padding-left: 0;}
+.themes-overlay ul li{border-bottom: 1px solid #ebebeb; padding: 3px; white-space: nowrap; }
+.themes-overlay ul li a{display: block; color: #000;}
+.themes-overlay ul li a img{width: 30px; height: 30px;margin-right: 2px;}
+.themes-overlay ul li.selected{background-color: #EBEBEB }
+.ui-panel, .ui-tabs {margin-bottom: 10px;}
+body .ui-icon {font-size: 1em;}
+.uix-dialog-fluid .ui-dialog-content{height: 100% !important}

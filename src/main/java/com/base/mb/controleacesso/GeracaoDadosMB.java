@@ -4,15 +4,15 @@ import com.base.GeracaoDadosSistema;
 import com.xpert.faces.utils.FacesMessageUtils;
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author ayslan
  *
  */
-@ManagedBean
+@Named
 @SessionScoped
 public class GeracaoDadosMB implements Serializable {
 

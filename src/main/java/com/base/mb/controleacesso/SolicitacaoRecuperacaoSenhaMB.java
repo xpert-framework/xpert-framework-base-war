@@ -4,16 +4,16 @@ package com.base.mb.controleacesso;
 import java.io.Serializable;
 import com.xpert.core.crud.AbstractBaseBean;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import com.base.bo.controleacesso.SolicitacaoRecuperacaoSenhaBO;
 import com.base.modelo.controleacesso.SolicitacaoRecuperacaoSenha;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author ayslan
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class SolicitacaoRecuperacaoSenhaMB extends AbstractBaseBean<SolicitacaoRecuperacaoSenha> implements Serializable {
 

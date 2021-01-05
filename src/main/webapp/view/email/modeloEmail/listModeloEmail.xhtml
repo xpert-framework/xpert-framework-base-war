@@ -21,6 +21,7 @@
                          paginatorTemplate="#{modeloEmailMB.dataModel.paginatorTemplate}"
                          value="#{modeloEmailMB.dataModel}" lazy="true" >
                 <p:column styleClass="uix-datatable-index">
+                    <f:facet name="header">-</f:facet>
                     <h:outputText value="#{index+1}"/>
                 </p:column>
                 <p:column headerText="#{msg['modeloEmail.assunto']}" sortBy="#{modeloEmail.assunto}"
@@ -49,17 +50,17 @@
                     <f:facet name="header">
                         <h:outputText value="#{xmsg['actions']}"/>
                     </f:facet>
-                    <p:commandButton oncomplete="PF('widgetModeloEmailDetail').show();"  icon="ui-icon-zoomin" 
+                    <p:commandButton oncomplete="PF('widgetModeloEmailDetail').show();"  icon="#{icons.detail}" 
                                      process="@form" update=":formDetailModeloEmail" title="#{xmsg['detail']}" >
                         <f:setPropertyActionListener value="#{modeloEmail}" target="#{modeloEmailMB.entity}" />
                     </p:commandButton>
                     <x:securityArea rolesAllowed="modeloEmail.create">
-                        <p:button icon="ui-icon-pencil" outcome="createModeloEmail" title="#{xmsg['edit']}">
+                        <p:button icon="#{icons.edit}" outcome="createModeloEmail" title="#{xmsg['edit']}">
                             <f:param name="id" value="#{modeloEmail.id}" />
                         </p:button>
                     </x:securityArea>
                     <x:securityArea rolesAllowed="modeloEmail.delete">
-                        <p:commandButton icon="ui-icon-trash" title="#{xmsg['delete']}" process="@form" update="@form" 
+                        <p:commandButton icon="#{icons.delete}" title="#{xmsg['delete']}" process="@form" update="@form" 
                                          action="#{modeloEmailMB.delete}" >
                             <f:setPropertyActionListener value="#{modeloEmail.id}" target="#{modeloEmailMB.id}" />
                             <x:confirmation message="#{xmsg['confirmDelete']} - #{modeloEmail}" />

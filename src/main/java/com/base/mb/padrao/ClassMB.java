@@ -1,6 +1,7 @@
 package com.base.mb.padrao;
 
-import com.base.modelo.exemplo.PessoaExemplo;
+import com.base.modelo.tabelas.Municipio;
+import com.base.modelo.tabelas.Uf;
 import com.base.modelo.controleacesso.Permissao;
 import com.base.modelo.controleacesso.Usuario;
 import com.base.modelo.configuracao.ErroSistema;
@@ -13,6 +14,7 @@ import com.base.modelo.email.ModeloEmail;
 import com.base.modelo.controleacesso.SolicitacaoRecuperacaoSenha;
 import com.base.modelo.email.TipoAssuntoEmail;
 import com.base.modelo.controleacesso.TipoRecuperacaoSenha;
+import com.xpert.audit.model.AuditingType;
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean
@@ -65,8 +67,15 @@ public class ClassMB {
     public Class getConfiguracaoEmail() {
         return ConfiguracaoEmail.class;
     }
-    public Class getPessoaExemplo() {
-        return PessoaExemplo.class;
+
+    public Class getMunicipio() {
+        return Municipio.class;
+    }
+    public Class getUf() {
+        return Uf.class;
+    }
+    public Class getAuditingType() {
+        return AuditingType.class;
     }
 
 }

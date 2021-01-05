@@ -1,0 +1,60 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:dashboard="http://xmlns.jcp.org/jsf/composite/components/dashboard"
+                 xmlns:x="http://xpert.com/faces">
+    <p:column style="text-align: right" sortBy="#{objeto[1]}">
+        <f:facet name="header">
+            <h:outputText value="#{xmsg['insert']}"/>
+        </f:facet>
+        <h:outputText value="#{objeto[1]}">
+            <f:convertNumber/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{x:sum(dashboardAuditoriaMB.dashboardAuditoria.eventosDia, '1')}">
+                <f:convertNumber/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column style="text-align: right" sortBy="#{objeto[2]}">
+        <f:facet name="header">
+            <h:outputText value="#{xmsg['update']}"/>
+        </f:facet>
+        <h:outputText value="#{objeto[2]}">
+            <f:convertNumber/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{x:sum(dashboardAuditoriaMB.dashboardAuditoria.eventosDia, '2')}">
+                <f:convertNumber/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column style="text-align: right" sortBy="#{objeto[3]}">
+        <f:facet name="header">
+            <h:outputText value="#{xmsg['delete']}"/>
+        </f:facet>
+        <h:outputText value="#{objeto[3]}">
+            <f:convertNumber/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{x:sum(dashboardAuditoriaMB.dashboardAuditoria.eventosDia, '3')}">
+                <f:convertNumber/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column style="text-align: right" sortBy="#{objeto[4]}">
+        <f:facet name="header">
+            <h:outputText value="#{msg['total']}"/>
+        </f:facet>
+        <h:outputText value="#{objeto[4]}">
+            <f:convertNumber/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{x:sum(dashboardAuditoriaMB.dashboardAuditoria.eventosDia, '4')}">
+                <f:convertNumber/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+</ui:composition>

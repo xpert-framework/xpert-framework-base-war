@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:overlayPanel id="overlayTema" styleClass="themes-overlay" for="temaButton" appendTo="@(body)"  >
+        <h:form>
+
+            <ul>
+                <ui:repeat value="#{applicationThemeMB.themes}" var="theme">
+                    <li class="#{userThemeMB.theme eq theme.name ? 'selected' : ''}">
+                        <p:commandLink action="#{userThemeMB.mudarTema}" oncomplete="PrimeFaces.changeTheme('#{theme.name}')" update="@form" process="@this">
+                            <f:setPropertyActionListener target="#{userThemeMB.theme}" value="#{theme.name}" />
+                            <h:graphicImage  value="/images/theme/#{theme.name}.png" alt="#{theme.name}"/>
+                            <span>#{theme.displayName}</span>
+                        </p:commandLink>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </h:form>
+    </p:overlayPanel>
+
+</ui:composition>

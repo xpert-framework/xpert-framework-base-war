@@ -13,19 +13,17 @@
             <p:menubar model="#{sessaoUsuarioMB.menuModel}" >
                 <f:facet name="options">
                     <h:panelGroup>
-                        <p:autoComplete minQueryLength="3" id="autoCompleteMenu" 
+                        <p:autoComplete minQueryLength="3" id="autoCompleteMenu" placeholder="Acesso Rápido"
                                         completeMethod="#{sessaoUsuarioMB.pesquisarPermissao}"
                                         converter="entityConverter" styleClass="acesso-rapido"
                                         itemValue="#{permissao}" scrollHeight="300"
                                         var="permissao" itemLabel="#{permissao.urlMenuVerificado}">
-                            <p:ajax event="itemSelect" onstart="navegarMenuBar();return false;" />
+                            <p:ajax event="query" global="false" />
+                            <p:ajax event="itemSelect" global="false" onstart="navegarMenuBar()" />
                             <p:column>
-                                <h:link outcome="#{permissao.urlMenuVerificado}" styleClass="link-acesso-rapido">
-                                    <h:outputText  value="#{permissao.caminhoPermissao}" escape="false"/>
-                                </h:link>
+                                <h:outputText  value="#{permissao.caminhoPermissao}" escape="false"/>
                             </p:column>
                         </p:autoComplete>
-                        <p:watermark value="Acesso Rápido" for="autoCompleteMenu"/>
                     </h:panelGroup>
                 </f:facet>
             </p:menubar>
@@ -53,4 +51,5 @@
             window.location.href = "#{request.contextPath}" + url;
         }
     </script>
+
 </ui:composition>

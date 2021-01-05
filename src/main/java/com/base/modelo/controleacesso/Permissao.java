@@ -21,7 +21,7 @@ public class Permissao implements Serializable, Role {
     @NotBlank
     private String descricao;
 
-    @Column(name = "chave")
+    @Column(name = "chave", unique = true)
     @NotBlank
     private String key;
 
@@ -54,16 +54,18 @@ public class Permissao implements Serializable, Role {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "permissoes")
     private List<Perfil> perfis;
-    
+
     private boolean ativo = true;
 
     @Transient
     private String caminhoPermissao;
-    
+
     /**
      * iniciar com valor padrao 0
      */
     private Integer ordenacao = 0;
+
+    private String icone;
 
     public Permissao() {
     }
@@ -81,10 +83,25 @@ public class Permissao implements Serializable, Role {
         this.possuiMenu = possuiMenu;
     }
 
+    public Permissao(String key, String descricao, String url, boolean possuiMenu, String icone) {
+        this.descricao = descricao;
+        this.key = key;
+        this.url = url;
+        this.possuiMenu = possuiMenu;
+        this.icone = icone;
+    }
+
     public Permissao(String key, String descricao, boolean possuiMenu) {
         this.descricao = descricao;
         this.key = key;
         this.possuiMenu = possuiMenu;
+    }
+
+    public Permissao(String key, String descricao, boolean possuiMenu, String icone) {
+        this.descricao = descricao;
+        this.key = key;
+        this.possuiMenu = possuiMenu;
+        this.icone = icone;
     }
 
     public Permissao(String key, String descricao) {
@@ -122,6 +139,14 @@ public class Permissao implements Serializable, Role {
         return descricao;
     }
 
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
+        this.icone = icone;
+    }
+
     public boolean isAtivo() {
         return ativo;
     }
@@ -137,7 +162,7 @@ public class Permissao implements Serializable, Role {
     public void setOrdenacao(Integer ordenacao) {
         this.ordenacao = ordenacao;
     }
-    
+
     public List<Perfil> getPerfis() {
         return perfis;
     }
@@ -193,7 +218,6 @@ public class Permissao implements Serializable, Role {
     public void setPermissoesFilhas(List<Permissao> permissoesFilhas) {
         this.permissoesFilhas = permissoesFilhas;
     }
-    
 
     @Override
     public String getKey() {

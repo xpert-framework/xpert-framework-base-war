@@ -228,8 +228,8 @@ public class EmailBO {
             email.send();
 
         } catch (EmailException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
             erroSistemaBO.save(ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             throw new BusinessException("Erro ao enviar o email. " + (ex.getMessage() != null ? ex.getMessage() : ""));
         }
 

@@ -10,7 +10,12 @@ import com.xpert.maker.MakerSwingFrame;
  * @author ayslan
  */
 public class Maker extends MakerSwingFrame {
+    
 
+    @Override
+    public boolean isUseCDIBeans() {
+        return true; 
+    }
     @Override
     public String getDefaultPackage() {
         return "com.base.modelo";
@@ -64,6 +69,8 @@ public class Maker extends MakerSwingFrame {
     public String getResourceBundle() {
         return "/src/main/resources/bundles/messages_pt_BR.properties";
     }
+    
+    
     
     
 }
