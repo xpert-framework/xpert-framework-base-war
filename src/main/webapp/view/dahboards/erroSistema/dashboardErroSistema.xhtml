@@ -79,11 +79,18 @@
                         <p:panel>
                             <h3>#{msg['dashboards.ultimoErro']}</h3>
 
-                            <pe:timeAgo  styleClass="card-value" value="#{dashboardErroSistemaMB.dashboardErroSistema.dataUltimoErro}"
-                                         titlePattern="#{formatMB.format.dataHora}"/>
-                            (<h:outputText value="#{dashboardErroSistemaMB.dashboardErroSistema.dataUltimoErro}">
-                                <f:convertDateTime pattern="#{formatMB.format.dataHora}" />
-                            </h:outputText>)
+                            <h:panelGroup rendered="#{not empty dashboardErroSistemaMB.dashboardErroSistema.dataUltimoErro}">
+
+                                <pe:timeAgo  styleClass="card-value" value="#{dashboardErroSistemaMB.dashboardErroSistema.dataUltimoErro}"
+                                             titlePattern="#{formatMB.format.dataHora}"/>
+                                (<h:outputText value="#{dashboardErroSistemaMB.dashboardErroSistema.dataUltimoErro}">
+                                    <f:convertDateTime pattern="#{formatMB.format.dataHora}" />
+                                </h:outputText>)
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{empty dashboardErroSistemaMB.dashboardErroSistema.dataUltimoErro}">
+                                <h:outputText styleClass="card-value" value="-"/>
+                            </h:panelGroup>
 
                             <i class="fas fa-calendar-alt card-icon" style="color: red;"></i>
                         </p:panel>
