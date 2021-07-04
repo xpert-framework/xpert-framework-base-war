@@ -107,6 +107,11 @@ public class UsuarioMB extends AbstractBaseBean<Usuario> implements Serializable
     public String getDataModelOrder() {
         return "nome";
     }
+    
+    @Override
+    public boolean isAuditQuery() {
+        return true;
+    }
 
     public MenuModel getMenuModel() {
         return menuModel;

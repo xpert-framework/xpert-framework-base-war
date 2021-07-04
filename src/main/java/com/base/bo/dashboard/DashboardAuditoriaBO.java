@@ -1,11 +1,10 @@
 package com.base.bo.dashboard;
 
+import com.base.constante.Constantes;
 import com.base.dao.DAO;
 import com.base.modelo.audit.Auditing;
-import com.base.modelo.audit.Metadata;
+import com.base.util.Dashboards;
 import com.base.vo.dashboard.DashboardAuditoria;
-import com.base.vo.audit.TabelaAuditoria;
-import com.xpert.audit.NotAudited;
 import static com.xpert.persistence.query.Sql.*;
 import com.xpert.audit.model.AuditingType;
 import com.xpert.core.exception.BusinessException;
@@ -13,8 +12,6 @@ import com.xpert.core.validation.DateValidation;
 import com.xpert.i18n.I18N;
 import com.xpert.persistence.query.QueryBuilder;
 import com.xpert.persistence.query.Restrictions;
-import com.xpert.persistence.utils.EntityUtils;
-import com.xpert.utils.CollectionsUtils;
 import com.xpert.utils.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +28,7 @@ import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.pie.PieChartModel;
 
 /**
+ * Objeto de Negocio para o Dashboard de auditoria
  *
  * @author ayslanms
  */
@@ -70,13 +68,13 @@ public class DashboardAuditoriaBO {
                         sum("CASE WHEN auditingType = 'INSERT' THEN 1 ELSE 0 END"),
                         sum("CASE WHEN auditingType = 'UPDATE' THEN 1 ELSE 0 END"),
                         sum("CASE WHEN auditingType = 'DELETE' THEN 1 ELSE 0 END"),
-                        count("*"))
+                        count("*", "total"))
                 .from(Auditing.class)
                 .add(getRestrictions(dashboardAuditoria));
 
         //ordernar pela posicao 5 (total)
         if (ordernarPorMaior) {
-            queryBuilder.orderBy("5");
+            queryBuilder.orderBy("total");
         }
         return queryBuilder.getResultList();
     }
@@ -108,10 +106,10 @@ public class DashboardAuditoriaBO {
                         sum("CASE WHEN auditingType = 'INSERT' THEN 1 ELSE 0 END"),
                         sum("CASE WHEN auditingType = 'UPDATE' THEN 1 ELSE 0 END"),
                         sum("CASE WHEN auditingType = 'DELETE' THEN 1 ELSE 0 END"),
-                        count("a"))
+                        count("a", "total"))
                 .from(Auditing.class, "a")
                 .leftJoin("a.usuario", "usuario")
-                .orderBy("5")
+                .orderBy("total")
                 .add(getRestrictions(dashboardAuditoria, "a"));
 
         return queryBuilder.getResultList();
@@ -229,7 +227,7 @@ public class DashboardAuditoriaBO {
     }
 
     /**
-     * Retorna o grafico de erros por dia
+     * Retorna o grafico de eventos de auditoria por dia
      *
      * @param dashboardAuditoria
      * @return
@@ -239,7 +237,7 @@ public class DashboardAuditoriaBO {
     }
 
     /**
-     * Retorna o grafico de erros por usuario
+     * Retorna o grafico de eventos de auditoria por usuario
      *
      * @param dashboardAuditoria
      * @param limite
@@ -251,7 +249,7 @@ public class DashboardAuditoriaBO {
     }
 
     /**
-     * Retorna o grafico de erros por tabela
+     * Retorna o grafico de eventos de auditoria por tabela
      *
      * @param dashboardAuditoria
      * @param limite
@@ -305,8 +303,8 @@ public class DashboardAuditoriaBO {
 
         DashboardAuditoria dashboardAuditoria = new DashboardAuditoria();
         //por padrao ele vem com o ultimo mes carregado
-        dashboardAuditoria.setDataInicial(new DateTime().plusMonths(-1).toDate());
-        dashboardAuditoria.setDataFinal(new Date());
+        dashboardAuditoria.setDataInicial(Dashboards.getDataAtualMenosUmMes());
+        dashboardAuditoria.setDataFinal(Dashboards.getDataAtual());
 
         //montar indicadores
         carregarDashboardAuditoria(dashboardAuditoria);
@@ -352,8 +350,8 @@ public class DashboardAuditoriaBO {
          */
         dashboardAuditoria.setGraficoEventosDia(getGraficoEventosDia(dashboardAuditoria));
         dashboardAuditoria.setGraficoEventosFaixaHorario(getGraficoEventosFaixaHorario(dashboardAuditoria));
-        dashboardAuditoria.setGraficoEventosTabela(getGraficoEventosTabela(dashboardAuditoria, 20));
-        dashboardAuditoria.setGraficoEventosUsuario(getGraficoEventosUsuario(dashboardAuditoria, 20));
+        dashboardAuditoria.setGraficoEventosTabela(getGraficoEventosTabela(dashboardAuditoria, Constantes.QUANTIDADE_LIMITE_REGISTROS_GRAFICOS_DASHBOARD));
+        dashboardAuditoria.setGraficoEventosUsuario(getGraficoEventosUsuario(dashboardAuditoria, Constantes.QUANTIDADE_LIMITE_REGISTROS_GRAFICOS_DASHBOARD));
         dashboardAuditoria.setGraficoEventosTipo(getGraficoEventosTipo(dashboardAuditoria));
 
     }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 /**
  *
- * @author
+ * @author Ayslan
  */
 @Entity
 public class Auditing extends AbstractAuditing implements Serializable {

@@ -3,7 +3,9 @@
     <auditing>
         <auditing-impl>com.base.modelo.audit.Auditing</auditing-impl>
         <metadata-impl>com.base.modelo.audit.Metadata</metadata-impl>
+        <query-auditing-impl>com.base.modelo.audit.QueryAuditing</query-auditing-impl>
         <auditing-listener>com.base.application.AuditingListenerImpl</auditing-listener>
+        <query-audit-persister-factory>com.base.application.QueryAuditPersisterFactoryImpl</query-audit-persister-factory>
     </auditing>
     
     <entity-manager-factory>com.base.application.EntityManagerFactoryImpl</entity-manager-factory>

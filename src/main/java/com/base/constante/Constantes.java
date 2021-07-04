@@ -40,7 +40,8 @@ public class Constantes {
     /**
      * Quantidade maxima a ser exbida na consulta de auditoria
      */
-    public static final int QUANTIDADE_MAXIMA_LISTA_AUDITORIA = 1000;
+    public static final int QUANTIDADE_MAXIMA_LISTA_AUDITORIA = 2000;
+    public static final int QUANTIDADE_LIMITE_REGISTROS_GRAFICOS_DASHBOARD = 20;
 
     private Constantes() {
     }

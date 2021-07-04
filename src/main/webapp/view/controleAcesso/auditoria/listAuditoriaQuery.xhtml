@@ -1,0 +1,270 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces"
+                 >
+    <ui:param name="title" value="#{msg['auditoriaQuery.relatorio']}" />
+    <ui:define name="body">
+
+        <h:form id="forListAuditoria">
+
+            <x:modalMessages>
+                <p:autoUpdate/>
+            </x:modalMessages>
+
+            <p:panel header="#{msg['filtros']}"  >
+                <div class="ui-fluid">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-2">
+                            <h:outputLabel value="* #{msg['dataInicio']}:" />
+                            <p:calendar  value="#{queryAuditingMB.consultaAuditoria.dataInicial}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-2">
+                            <h:outputLabel value="* #{msg['dataFinal']}:" />
+                            <p:calendar  value="#{queryAuditingMB.consultaAuditoria.dataFinal}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-4">
+                            <h:outputLabel value="#{msg['usuarios']}:" />
+                            <p:selectCheckboxMenu  value="#{queryAuditingMB.consultaAuditoria.usuarios}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="entityConverter">
+                                <f:selectItems value="#{findAllBean.get(classMB.usuario)}" var="usuario"
+                                               itemValue="#{usuario}" itemLabel="#{usuario.nome}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-4">
+                            <h:outputLabel value="#{msg['tiposAuditoria']}:" />
+                            <p:selectCheckboxMenu  value="#{queryAuditingMB.consultaAuditoria.tipos}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="omnifaces.GenericEnumConverter" >
+                                <f:selectItems value="#{findAllBean.get(classMB.queryAuditingType)}" var="auditingType"
+                                               itemValue="#{auditingType}" itemLabel="#{xmsg[auditingType.description]}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <h:outputLabel value="#{msg['tabelas']}:" />
+                            <p:selectCheckboxMenu  value="#{queryAuditingMB.consultaAuditoria.tabelas}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="omnifaces.SelectItemsIndexConverter">
+                                <f:selectItems value="#{queryAuditingMB.tabelas}" var="tabela"
+                                               itemValue="#{tabela}" itemLabel="#{tabela.nome}"/>
+                            </p:selectCheckboxMenu>
+                            <h:outputText value="Tabelas usadas na consulta (Em algumas consultas o nome da tabela nao está disponível, nesse caso tentar filtar no campo 'SQL')" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="#{msg['queryAuditing.identifier']}:" />
+                            <p:inputMask mask="9?9999999999999" slotChar="" value="#{queryAuditingMB.consultaAuditoria.identificador}" maxlength="200"   />
+                            <h:outputText value="Identificador do registro (apenas para o tipo 'Consulta por Id')" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value=" #{msg['queryAuditing.ip']}:" />
+                            <p:inputText value="#{queryAuditingMB.consultaAuditoria.ip}" maxlength="200"   />
+                            <h:outputText value="IP de onde partiu a requisição" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value=" #{msg['queryAuditing.hasQueryParameter']}:" />
+                            <p:selectOneMenu value="#{queryAuditingMB.consultaAuditoria.consultaComParametros}"  >
+                                <f:selectItem itemLabel="#{msg['todos']}" />
+                                <f:selectItems value="#{booleanSelectItens}" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Indica se a consulta possui ou não parâmtros (cláusula 'where')" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value=" #{msg['queryAuditing.paginatedQuery']}:" />
+                            <p:selectOneMenu value="#{queryAuditingMB.consultaAuditoria.consultaPaginada}"  >
+                                <f:selectItem itemLabel="#{msg['todos']}" />
+                                <f:selectItems value="#{booleanSelectItens}" />
+                            </p:selectOneMenu>
+                            <h:outputText value="Indica se a consulta possui paginação (limitada a alguns registros)" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="#{msg['queryAuditing.rowsTotal']}:" />
+                            <h:panelGrid columns="3" styleClass="w-100p">
+                                <p:inputMask mask="9?9999999999999" slotChar="" value="#{queryAuditingMB.consultaAuditoria.totalLinhasInicial}"    />
+                                <h:outputText value="até"/>
+                                <p:inputMask mask="9?9999999999999" slotChar="" value="#{queryAuditingMB.consultaAuditoria.totalLinhasFinal}"    />
+                            </h:panelGrid>
+                            <h:outputText value="Quantidade total de linhas retornadas na consulta" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="#{msg['queryAuditing.timeMilliseconds']}:" />
+                            <h:panelGrid columns="3" styleClass="w-100p">
+                                <p:inputMask mask="9?9999999999999" slotChar="" value="#{queryAuditingMB.consultaAuditoria.tempoConsultaInicial}"    />
+                                <h:outputText value="até"/>
+                                <p:inputMask mask="9?9999999999999" slotChar="" value="#{queryAuditingMB.consultaAuditoria.tempoConsultaFinal}"    />
+                            </h:panelGrid>
+                            <h:outputText value="Tempo em milisegundos que a consulta levou para ser executada" styleClass="help-block"/>
+                        </div>
+
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <h:outputLabel value=" #{msg['queryAuditing.sqlQuery']}:" />
+                            <p:inputText value="#{queryAuditingMB.consultaAuditoria.sqlQuery}"  maxlength="200" />
+                            <h:outputText value="Instrução SQL da consulta a base de dados" styleClass="help-block"/>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <h:outputLabel value=" #{msg['queryAuditing.sqlParameters']}:" />
+                            <p:inputText value="#{queryAuditingMB.consultaAuditoria.sqlParameters}"  maxlength="200" />
+                            <h:outputText value="Parâmetros do SQL da consulta a base de dados (cláusula 'where')" styleClass="help-block"/>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="uix-center">
+
+                    <p:commandButton process="@form" update="@form" value="#{msg['filtrar']}" 
+                                     icon="fas fa-search" action="#{queryAuditingMB.consultar}"  />
+
+                    <p:commandButton process="@this" update="@form" value="#{msg['limpar']}" 
+                                     icon="fas fa-times" action="#{queryAuditingMB.limpar}"  />
+
+                </div>
+                <div class="clearfix"></div>
+            </p:panel>
+
+
+
+            <h:panelGroup layout="block" id="panelResultado" styleClass="ui-fluid">
+
+                <div class="uix-table-actions"  >
+                    <x:dataTableExporter target=":forListAuditoria:dataTableAuditing" fileName="QueryAuditing_List" landscape="true"/>
+                </div>
+
+                <p:dataTable var="audit" emptyMessage="#{xmsg.noRecordFound}" paginator="true" styleClass="font-12"
+                             rowsPerPageTemplate="10,20,30"  rows="10" paginatorPosition="bottom"
+                             currentPageReportTemplate="#{xpert.defaultCurrentPageReportTemplate}"
+                             paginatorTemplate="#{xpert.defaultPaginatorTemplate}"
+                             id="dataTableAuditing" lazy="true"
+                             sortBy="#{audit.startDate}" sortOrder="ascending"
+                             value="#{queryAuditingMB.auditings}" rowIndexVar="index">
+                    <p:column style="text-align: center;" toggleable="false">
+                        <f:facet name="header">
+                            <p:commandButton id="toggler" type="button" icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="dataTableAuditing" trigger="toggler"/>
+                        </f:facet>
+                        <h:outputText value="#{index+1}" />
+                    </p:column>
+                    <p:column style="text-align: center;" sortBy="#{audit.startDate}" headerText="#{msg['queryAuditing.startDate']}"  >
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.startDate']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.startDate}" >
+                            <f:convertDateTime dateStyle="medium" type="both"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="text-align: center;" sortBy="#{audit.endDate}" headerText="#{msg['queryAuditing.endDate']}"  >
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.endDate']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.endDate}" >
+                            <f:convertDateTime dateStyle="medium" type="both"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="text-align: center;" sortBy="#{audit.auditingType}" headerText="#{xmsg.type}" >
+                        <f:facet name="header">
+                            <h:outputText value="#{xmsg.type}"/>
+                        </f:facet>
+                        <h:outputText value="#{xmsg[audit.auditingType.description]}" />
+                    </p:column>
+                    <p:column headerText="#{xmsg.table}" sortBy="#{audit.entityName}">
+                        <f:facet name="header">
+                            <h:outputText value="#{xmsg.table}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.entityName}" /> (<h:outputText value="#{audit.entity}" />)
+                    </p:column>
+                    <p:column headerText="#{xmsg.id}" sortBy="#{audit.identifier}">
+                        <f:facet name="header">
+                            <h:outputText value="#{xmsg.id}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.identifier}" />
+                    </p:column>
+                    <p:column headerText="#{xmsg.user}" sortBy="#{audit.userName}">
+                        <f:facet name="header">
+                            <h:outputText value="#{xmsg.user}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.userName}" />
+                    </p:column>
+                    <p:column headerText="#{xmsg.ip}" sortBy="#{audit.ip}">
+                        <f:facet name="header">
+                            <h:outputText value="#{xmsg.ip}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.ip}" />
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.sqlQuery']}" sortBy="#{audit.sqlQuery}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.sqlQuery']}"/>
+                        </f:facet>
+                        <pre class="code"><h:outputText value="#{audit.sqlQuery}"/></pre>
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.sqlParameters']}" sortBy="#{audit.sqlParameters}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.sqlParameters']}"/>
+                        </f:facet>
+                        <pre  class="code"><h:outputText value="#{audit.sqlParameters}"/></pre>
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.rowsTotal']}" sortBy="#{audit.rowsTotal}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.rowsTotal']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.rowsTotal}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.timeMilliseconds']}" sortBy="#{audit.timeMilliseconds}" style="text-align: right;">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.timeMilliseconds']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.timeMilliseconds}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.paginatedQuery']}" sortBy="#{audit.paginatedQuery}" style="text-align: center;" >
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.paginatedQuery']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.paginatedQuery}" converter="yesNoConverter" />
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.hasQueryParameter']}" sortBy="#{audit.hasQueryParameter}" style="text-align: center;" visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.hasQueryParameter']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.hasQueryParameter}" converter="yesNoConverter" />
+                    </p:column>
+                    <p:column headerText="#{msg['queryAuditing.parametersSize']}" sortBy="#{audit.parametersSize}" style="text-align: right;" visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg['queryAuditing.parametersSize']}"/>
+                        </f:facet>
+                        <h:outputText value="#{audit.parametersSize}"/>
+                    </p:column>
+                    <p:column exportable="false" styleClass="uix-datatable-actions" toggleable="false">
+                        <p:commandButton process="@this" update=":formDetalheAudit" oncomplete="PF('dialogDetalheAudit').show()"
+                                         icon="#{icons.detail}" title="#{xmsg['detail']}">
+                            <f:setPropertyActionListener value="#{audit}" target="#{queryAuditingMB.auditing}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+            </h:panelGroup>
+        </h:form>
+
+        <p:dialog appendTo="@(body)" modal="true" styleClass="uix-dialog-fluid" widgetVar="dialogDetalheAudit" header="#{msg['auditoriaQuery.detail']}">
+
+            <ui:include src="detailAuditoriaQuery.xhtml"/>
+
+        </p:dialog>
+
+
+
+
+    </ui:define>
+</ui:composition>

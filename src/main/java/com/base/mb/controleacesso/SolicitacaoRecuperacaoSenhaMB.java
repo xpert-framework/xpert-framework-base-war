@@ -1,6 +1,5 @@
 package com.base.mb.controleacesso;
 
-
 import java.io.Serializable;
 import com.xpert.core.crud.AbstractBaseBean;
 import javax.ejb.EJB;
@@ -34,6 +33,10 @@ public class SolicitacaoRecuperacaoSenhaMB extends AbstractBaseBean<SolicitacaoR
     public boolean isLoadEntityOnPostConstruct() {
         return false;
     }
-    
-    
+
+    @Override
+    public boolean isAuditQuery() {
+        return true;
+    }
+
 }

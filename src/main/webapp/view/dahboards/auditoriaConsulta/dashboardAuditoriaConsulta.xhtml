@@ -1,0 +1,189 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 template="/template/mainTemplate.xhtml"
+                 xmlns:x="http://xpert.com/faces"
+                 xmlns:dashboard="http://xmlns.jcp.org/jsf/composite/components/dashboard"
+                 >
+    <ui:param name="title" value="#{msg['dashboards.auditoriaConsultas']}" />
+    <ui:define name="body">
+
+        <ui:include src="/template/charts.xhtml"/>
+
+        <h:form id="formDashboardAuditoria" styleClass="dashboard">
+
+            <p:panel style="padding: .5em" >
+                <h3>#{msg['filtros']}</h3>
+                <div class="ui-fluid">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="* #{msg['dataInicio']}:" />
+                            <p:calendar  value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.dataInicial}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <h:outputLabel value="* #{msg['dataFinal']}:" />
+                            <p:calendar  value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.dataFinal}" maxlength="255" 
+                                         pattern="dd/MM/yyyy" mask="true" showOn="button" showButtonPanel="true" navigator="true"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['usuarios']}:" />
+                            <p:selectCheckboxMenu  value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.usuarios}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="entityConverter">
+                                <f:selectItems value="#{findAllBean.get(classMB.usuario)}" var="usuario"
+                                               itemValue="#{usuario}" itemLabel="#{usuario.nome}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['tiposAuditoria']}:" />
+
+                            <p:selectCheckboxMenu  value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.tipos}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="omnifaces.GenericEnumConverter" >
+                                <f:selectItems value="#{findAllBean.get(classMB.queryAuditingType)}" var="auditingType"
+                                               itemValue="#{auditingType}" itemLabel="#{xmsg[auditingType.description]}"/>
+                            </p:selectCheckboxMenu>
+
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h:outputLabel value="#{msg['tabelas']}:" />
+                            <p:selectCheckboxMenu  value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.tabelas}" multiple="true" 
+                                                   filter="true" filterMatchMode="contains" converter="omnifaces.SelectItemsIndexConverter">
+                                <f:selectItems value="#{dashboardAuditoriaConsultaMB.tabelas}" var="tabela"
+                                               itemValue="#{tabela}" itemLabel="#{tabela.nome}"/>
+                            </p:selectCheckboxMenu>
+                        </div>
+
+                    </div>
+                </div>
+                <div  class="pull-left">
+                    <dashboard:selectValoresGraficos update=":formDashboardAuditoria:panelResultadoDashboard"/>
+                </div>
+                <div class="pull-right">
+
+
+
+                    <p:commandButton process="@form" update="@form" value="#{msg['filtrar']}" 
+                                     icon="fas fa-search" action="#{dashboardAuditoriaConsultaMB.carregarDashboard}"  />
+
+                </div>
+                <div class="clearfix"></div>
+            </p:panel>
+
+
+            <h:panelGroup layout="block" id="panelResultadoDashboard" styleClass="ui-fluid">
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.totalConsultas']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.quantidadeConsultas}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <i class="fas fa-search card-icon"></i><br/>
+                            <h6>#{msg['dashboards.totalConsultasDetalhe']}</h6>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.totalTabelas']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.quantidadeTabelas}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <i class="fas fa-table card-icon"></i>
+                            <h6>#{msg['dashboards.totalTabelasDetalhe']}</h6>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultaComMaiorTempo']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.consultaComMaiorTempoFormatada}" escape="false" />
+                            <i class="far fa-hourglass card-icon" ></i>
+                            <h6>#{msg['dashboards.consultaComMaiorTempoDetalhe']}</h6>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultaComMaisLinhas']}</h3>
+                            <h:outputText styleClass="card-value" value="#{dashboardAuditoriaConsultaMB.dashboardAuditoria.consultaComMaisLinhas}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                            <h:outputText value="-" rendered="#{empty dashboardAuditoriaConsultaMB.dashboardAuditoria.consultaComMaisLinhas}" />
+                            <i class="fa fa-chart-line card-icon"></i>
+                              <h6>#{msg['dashboards.consultaComMaisLinhasDetalhe']}</h6>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasDia']}</h3>
+                            <ui:include src="graficoConsultasDia.xhtml"/>
+                        </p:panel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasFaixaHorario']}</h3>
+                            <ui:include src="graficoConsultasFaixaHorario.xhtml"/>
+                        </p:panel>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-6 ui-lg-6 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasPaginadas']}</h3>
+                            <h5>#{msg['dashboards.consultasPaginadasDetalhe']}</h5>
+                            <ui:include src="graficoConsultasPaginadas.xhtml"/>
+                        </p:panel>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-6 ui-lg-6 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasParametros']}</h3>
+                            <h5>#{msg['dashboards.consultasParametrosDetalhe']}</h5>
+                            <ui:include src="graficoConsultasParametros.xhtml"/>
+                        </p:panel>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-6 ui-lg-6 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasFaixaLinhas']}</h3>
+                            <h5>#{msg['dashboards.consultasFaixaLinhasDetalhe']}</h5>
+                            <ui:include src="graficoConsultasFaixaLinhas.xhtml"/>
+                        </p:panel>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-6 ui-lg-6 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasFaixaTempo']}</h3>
+                            <h5>#{msg['dashboards.consultasFaixaTempoDetalhe']}</h5>
+                            <ui:include src="graficoConsultasFaixaTempo.xhtml"/>
+                        </p:panel>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasUsuario']}</h3>
+                            <ui:include src="graficoConsultasUsuario.xhtml"/>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 card">
+                        <p:panel>
+                            <h3>#{msg['dashboards.consultasTabela']}</h3>
+                            <ui:include src="graficoConsultasTabela.xhtml"/>
+                        </p:panel>
+                    </div>
+
+                </div>
+            </h:panelGroup>
+        </h:form>
+
+        <x:modalMessages>
+            <p:autoUpdate/>
+        </x:modalMessages>
+
+
+    </ui:define>
+</ui:composition>

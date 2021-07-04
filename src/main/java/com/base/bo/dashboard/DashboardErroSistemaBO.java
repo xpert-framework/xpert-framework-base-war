@@ -1,7 +1,9 @@
 package com.base.bo.dashboard;
 
+import com.base.constante.Constantes;
 import com.base.dao.DAO;
 import com.base.modelo.configuracao.ErroSistema;
+import com.base.util.Dashboards;
 import com.base.vo.dashboard.DashboardErroSistema;
 import com.xpert.core.exception.BusinessException;
 import com.xpert.core.validation.DateValidation;
@@ -27,6 +29,7 @@ import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.line.LineChartDataSet;
 
 /**
+ * Objeto de Negocio para o Dashboard de erros do sistema
  *
  * @author ayslanms
  */
@@ -107,7 +110,6 @@ public class DashboardErroSistemaBO {
                 .aggregate(
                         count("*"),
                         count("*") + "/" + 30
-                        
                 )
                 .from(ErroSistema.class)
                 .add(getRestrictions(dashboardErroSistema))
@@ -180,7 +182,6 @@ public class DashboardErroSistemaBO {
         BarChartModel barChartModel = new BarChartModel();
         ChartData data = new ChartData();
 
-
         LineChartDataSet dataSetQuantidade = new LineChartDataSet();
         dataSetQuantidade.setYaxisID("quantidade");
         dataSetQuantidade.setData(valuesQuantidade);
@@ -195,7 +196,7 @@ public class DashboardErroSistemaBO {
         dataSetFuncionalidade.setLabel("Funcionalidades Afetadas");
         dataSetFuncionalidade.setBorderColor(Charts.COLOR_SERIE_1);
         dataSetFuncionalidade.setBackgroundColor(Charts.COLOR_SERIE_1);
-        
+
         data.addChartDataSet(dataSetQuantidade);
         data.addChartDataSet(dataSetFuncionalidade);
 
@@ -248,7 +249,6 @@ public class DashboardErroSistemaBO {
             valuesQuantidade.add(((Number) linha[1]).longValue());
             valuesMedia.add(((Number) linha[2]).longValue());
         }
-
 
         return Charts.getGraficoQuantidadeMedia(valuesQuantidade, valuesMedia, labels, dashboardErroSistema.getIntervaloDias());
     }
@@ -326,8 +326,8 @@ public class DashboardErroSistemaBO {
 
         DashboardErroSistema dashboardErroSistema = new DashboardErroSistema();
         //por padrao ele vem com o ultimo mes carregado
-        dashboardErroSistema.setDataInicial(new DateTime().plusMonths(-1).toDate());
-        dashboardErroSistema.setDataFinal(new Date());
+        dashboardErroSistema.setDataInicial(Dashboards.getDataAtualMenosUmMes());
+        dashboardErroSistema.setDataFinal(Dashboards.getDataAtual());
 
         //montar indicadores
         carregarDashboardErroSistema(dashboardErroSistema);
@@ -371,8 +371,8 @@ public class DashboardErroSistemaBO {
          */
         dashboardErroSistema.setGraficoErrosDia(getGraficoErrosDia(dashboardErroSistema));
         dashboardErroSistema.setGraficoErrosFaixaHorario(getGraficoErrosFaixaHorario(dashboardErroSistema));
-        dashboardErroSistema.setGraficoErrosUsuario(getGraficoErrosUsuario(dashboardErroSistema, 20));
-        dashboardErroSistema.setGraficoErrosFuncionalidade(getGraficoErrosFuncionalidade(dashboardErroSistema, 20));
+        dashboardErroSistema.setGraficoErrosUsuario(getGraficoErrosUsuario(dashboardErroSistema, Constantes.QUANTIDADE_LIMITE_REGISTROS_GRAFICOS_DASHBOARD));
+        dashboardErroSistema.setGraficoErrosFuncionalidade(getGraficoErrosFuncionalidade(dashboardErroSistema, Constantes.QUANTIDADE_LIMITE_REGISTROS_GRAFICOS_DASHBOARD));
     }
 
     public Restrictions getRestrictions(DashboardErroSistema dashboardErroSistema) {

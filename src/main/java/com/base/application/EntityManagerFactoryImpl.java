@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author
+ * @author ayslan
  */
 public class EntityManagerFactoryImpl implements EntityManagerFactory {
 

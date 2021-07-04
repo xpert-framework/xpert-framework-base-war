@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
  */
 public class BaseDAOImpl<T> extends com.xpert.persistence.dao.BaseDAOImpl<T> {
 
-    @PersistenceContext(unitName=Constantes.PERSISTENCE_UNIT_NAME)
+    @PersistenceContext(unitName = Constantes.PERSISTENCE_UNIT_NAME)
     private EntityManager entityManager;
 
     public BaseDAOImpl() {
@@ -20,7 +20,7 @@ public class BaseDAOImpl<T> extends com.xpert.persistence.dao.BaseDAOImpl<T> {
     public BaseDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    
+
     @Override
     public EntityManager getEntityManager() {
         return entityManager;

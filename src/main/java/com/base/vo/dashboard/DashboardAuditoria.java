@@ -6,6 +6,8 @@ import com.xpert.audit.model.AuditingType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.pie.PieChartModel;
@@ -46,6 +48,19 @@ public class DashboardAuditoria {
     private BarChartModel graficoEventosUsuario;
     private BarChartModel graficoEventosTabela;
     private BarChartModel graficoEventosFaixaHorario;
+
+    /**
+     * Retorna a quantidade de dias entre a dataInicio e a dataFim
+     *
+     * @return
+     */
+    public Integer getIntervaloDias() {
+
+        DateTime inicio = new DateTime(dataInicial);
+        DateTime fim = new DateTime(dataFinal);
+
+        return Days.daysBetween(inicio, fim).getDays();
+    }
 
     /**
      * Retorna a lista de nomes das tabelas

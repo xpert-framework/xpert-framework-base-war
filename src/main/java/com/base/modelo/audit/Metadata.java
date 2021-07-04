@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 /**
  *
- * @author
+ * @author Ayslan
  */
 @Entity
 public class Metadata extends AbstractMetadata implements Serializable {

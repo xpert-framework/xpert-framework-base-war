@@ -116,12 +116,12 @@ public class AuditingBO {
         }
 
         Restrictions restrictions = getRestrictions(consultaAuditoria);
-        Long total = auditingDAO.count(restrictions);
+        Long total = auditingDAO.count(restrictions, true);
         if (total >= Constantes.QUANTIDADE_MAXIMA_LISTA_AUDITORIA) {
             throw new BusinessException("Foram encontrados " + total + " registros. É necessário informar mais filtros.");
         }
 
-        return auditingDAO.list(restrictions, "eventDate");
+        return auditingDAO.list(restrictions, "eventDate", true);
 
     }
 

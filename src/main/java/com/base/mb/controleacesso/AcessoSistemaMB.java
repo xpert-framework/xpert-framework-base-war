@@ -1,6 +1,5 @@
 package com.base.mb.controleacesso;
 
-
 import java.io.Serializable;
 import com.xpert.core.crud.AbstractBaseBean;
 import com.xpert.core.crud.AbstractBusinessObject;
@@ -29,5 +28,10 @@ public class AcessoSistemaMB extends AbstractBaseBean<AcessoSistema> implements 
     @Override
     public String getDataModelOrder() {
         return "id DESC";
+    }
+
+    @Override
+    public boolean isAuditQuery() {
+        return true;
     }
 }

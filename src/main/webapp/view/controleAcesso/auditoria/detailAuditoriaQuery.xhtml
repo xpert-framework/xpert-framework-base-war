@@ -1,0 +1,133 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:pe="http://primefaces.org/ui/extensions"
+                 xmlns:x="http://xpert.com/faces"
+                 >
+
+
+    <h:form id="formDetalheAudit" >
+
+        <div class="ui-fluid">
+
+            <div class="ui-g" >
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{msg['queryAuditing.startDate']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.startDate}" >
+                        <f:convertDateTime dateStyle="medium" type="both"/>
+                    </h:outputText>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{msg['queryAuditing.endDate']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.endDate}" >
+                        <f:convertDateTime dateStyle="medium" type="both"/>
+                    </h:outputText>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4"> 
+                    <h:outputLabel value="#{msg['queryAuditing.timeMilliseconds']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.timeMilliseconds}" >
+                        <f:convertNumber />
+                    </h:outputText>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{xmsg.type}:" /><br/>
+                    <h:outputText value="#{xmsg[queryAuditingMB.auditing.auditingType.description]}" />
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4" >
+                    <h:outputLabel value="#{xmsg.table}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.entityName} (#{queryAuditingMB.auditing.entity})" />
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{xmsg.user}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.userName}" />
+                </div>
+
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{xmsg.id}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.identifier}" />
+                </div>
+
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{xmsg.ip}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.ip}" />
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{msg['queryAuditing.paginatedQuery']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.paginatedQuery}" converter="yesNoConverter" />
+
+                    <h:panelGroup rendered="#{queryAuditingMB.auditing.paginatedQuery}">
+                        (
+                        #{msg['queryAuditing.firstResult']}: 
+                        <h:outputText value="#{queryAuditingMB.auditing.firstResult}" /> 
+                        #{msg['queryAuditing.maxResults']}: 
+                        <h:outputText value="#{queryAuditingMB.auditing.maxResults}" /> 
+                        )
+                    </h:panelGroup>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{msg['queryAuditing.hasQueryParameter']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.hasQueryParameter}" converter="yesNoConverter" />
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{msg['queryAuditing.parametersSize']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.parametersSize}" />
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-4">
+                    <h:outputLabel value="#{msg['queryAuditing.rowsTotal']}:" /><br/>
+                    <h:outputText value="#{queryAuditingMB.auditing.rowsTotal}" >
+                        <f:convertNumber/>
+                    </h:outputText>
+                </div>
+
+
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <h:outputLabel value="#{msg['queryAuditing.sqlQuery']}:" /><br/>
+                    <pre>
+                            <h:outputText value="#{queryAuditingMB.auditing.sqlQuery}" />
+                    </pre>
+                </div>
+                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                    <h:outputLabel value="#{msg['queryAuditing.sqlParameters']}:" /><br/>
+                    <pre id="json-parameters">
+                            <h:outputText value="#{queryAuditingMB.auditing.sqlParameters}" />
+                    </pre>
+                    <table id="table-json-parameters" class="table">
+
+                    </table>
+                    <script>
+                        /*<![CDATA[*/
+                        $(function () {
+                            $("#table-json-parameters").html("");
+                            var jsonString = $("#json-parameters").html();
+                            if (jsonString != undefined && jsonString != null && jsonString != "") {
+                                try {
+                                    var jsonObject = JSON.parse(jsonString);
+                                    JsonToTable.build("table-json-parameters", jsonObject);
+                                } catch (e) {
+                                    //invalid json
+                                }
+
+                            }
+                        });
+                        /*]]>*/
+                    </script>
+                </div>
+
+
+            </div>
+        </div>
+
+    </h:form>
+</ui:composition>

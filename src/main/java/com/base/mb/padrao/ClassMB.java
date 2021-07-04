@@ -15,6 +15,7 @@ import com.base.modelo.controleacesso.SolicitacaoRecuperacaoSenha;
 import com.base.modelo.email.TipoAssuntoEmail;
 import com.base.modelo.controleacesso.TipoRecuperacaoSenha;
 import com.xpert.audit.model.AuditingType;
+import com.xpert.audit.model.QueryAuditingType;
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean
@@ -76,6 +77,9 @@ public class ClassMB {
     }
     public Class getAuditingType() {
         return AuditingType.class;
+    }
+    public Class getQueryAuditingType() {
+        return QueryAuditingType.class;
     }
 
 }

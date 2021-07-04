@@ -16,7 +16,5 @@ public class AuditingDAOImpl extends BaseDAOImpl<Auditing> implements AuditingDA
     public Class getEntityClass() {
         return Auditing.class;
     }
-    
-    
-    
+
 }
