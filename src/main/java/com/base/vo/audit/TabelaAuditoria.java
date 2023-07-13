@@ -1,5 +1,6 @@
 package com.base.vo.audit;
 
+import com.xpert.persistence.utils.EntityUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class TabelaAuditoria {
     public static List<String> getNomesTabelas(List<TabelaAuditoria> tabelas) {
         List<String> nomesTabelas = new ArrayList<>();
         for (TabelaAuditoria tabela : tabelas) {
-            nomesTabelas.add(tabela.getEntity().getSimpleName());
+            nomesTabelas.add(EntityUtils.getEntityTableName(tabela.getEntity(), false));
         }
         return nomesTabelas;
     }
