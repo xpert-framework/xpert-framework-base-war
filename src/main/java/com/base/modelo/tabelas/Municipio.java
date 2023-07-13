@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author ayslanms
  */
 @Entity
-@Table(name = "tbmunicipio",
+@Table(
         uniqueConstraints = {
             @UniqueConstraint(columnNames = {"nome", "uf_id"}),
             @UniqueConstraint(columnNames = {"codigoIbge"})
